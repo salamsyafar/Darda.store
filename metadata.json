@@ -1,0 +1,8 @@
+{
+  "name": "Darda Store",
+  "description": "Digital marketplace platform untuk UMKM jamaah Masjid Darussalam Dua. Belanja Berkah, Dukung UMKM Jamaah.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-emerald-950: #022c22;
+  --color-emerald-900: #064E3B;
+  --color-emerald-800: #065f46;
+  --color-emerald-700: #047857;
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #B89628;
+  --color-gold-400: #E5C358;
+  --color-gold-100: #FBF5E0;
+  --color-gold-50: #FCF9EE;
+  --color-cream: #FAFAF9;
+  
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cinzel', serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background-color: #FAFAF9;
+  color: #1F2937;
+}
+
+.font-serif-title {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-brand {
+  font-family: 'Cinzel', serif;
+}
+

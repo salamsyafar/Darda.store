@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 650" fill="none">
+  <defs>
+    <!-- Emerald Green Gradient for Letter D -->
+    <linearGradient id="fullEmeraldD" x1="200" y1="80" x2="400" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#145A38" />
+      <stop offset="45%" stop-color="#0C3B29" />
+      <stop offset="100%" stop-color="#05261A" />
+    </linearGradient>
+
+    <!-- Gold Metallic Gradient for Leaf & Crescent & STORE -->
+    <linearGradient id="fullGoldLeaf" x1="180" y1="160" x2="330" y2="310" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E5C158" />
+      <stop offset="35%" stop-color="#D4AF37" />
+      <stop offset="70%" stop-color="#B8860B" />
+      <stop offset="100%" stop-color="#996E06" />
+    </linearGradient>
+  </defs>
+
+  <!-- ================= EMBLEM GROUP ================= -->
+  <g transform="translate(50, 0)">
+    <!-- 1. The Letter "D" Body -->
+    <path
+      d="M 202 76
+         L 202 270
+         C 202 270, 260 276, 302 270
+         C 370 260, 398 210, 398 170
+         C 398 110, 340 76, 280 76
+         Z"
+      fill="url(#fullEmeraldD)"
+    />
+
+    <!-- Outer Arch of D -->
+    <path
+      d="M 202 76
+         C 202 76, 280 74, 330 92
+         C 386 112, 400 168, 394 218
+         C 386 274, 340 316, 284 316
+         C 250 316, 225 298, 225 298
+         L 240 276
+         C 240 276, 262 290, 286 290
+         C 322 290, 362 258, 368 212
+         C 374 170, 360 124, 316 108
+         C 276 94, 228 96, 228 96
+         Z"
+      fill="url(#fullEmeraldD)"
+    />
+
+    <!-- 2. Inner White Islamic Arch (Mihrab Cutout) -->
+    <path
+      d="M 296 102
+         C 296 102, 272 134, 254 162
+         C 242 182, 242 264, 242 264
+         L 348 264
+         C 348 264, 348 182, 336 162
+         C 318 134, 296 102, 296 102
+         Z"
+      fill="#FFFFFF"
+    />
+
+    <!-- 3. Mosque Dome Silhouette (Emerald) -->
+    <path
+      d="M 296 150
+         C 296 150, 284 174, 266 186
+         C 260 190, 260 264, 260 264
+         L 330 264
+         C 330 264, 330 190, 324 186
+         C 306 174, 296 150, 296 150
+         Z"
+      fill="#0C3B29"
+    />
+
+    <!-- 4. Golden Crescent Moon -->
+    <path
+      d="M 296 120
+         C 302 120, 308 126, 308 133
+         C 308 140, 302 146, 295 146
+         C 288 146, 284 140, 284 134
+         C 284 130, 286 127, 288 125
+         C 286 129, 287 136, 292 139
+         C 297 141, 302 138, 302 133
+         C 302 127, 298 122, 296 120
+         Z"
+      fill="url(#fullGoldLeaf)"
+    />
+
+    <!-- 5. Golden Leaf Accent (Bottom-Left) -->
+    <path
+      d="M 202 162
+         C 202 162, 192 210, 210 250
+         C 226 284, 264 304, 296 302
+         C 296 302, 262 290, 244 264
+         C 222 230, 226 188, 202 162
+         Z"
+      fill="url(#fullGoldLeaf)"
+    />
+
+    <path
+      d="M 202 162
+         C 202 162, 228 196, 244 236
+         C 258 270, 296 302, 296 302
+         C 296 302, 272 274, 260 244
+         C 242 204, 224 176, 202 162
+         Z"
+      fill="#F3D17A"
+      opacity="0.9"
+    />
+
+    <!-- Leaf Vein -->
+    <path
+      d="M 204 166
+         C 224 202, 250 246, 292 300"
+      stroke="#FFFFFF"
+      stroke-width="3"
+      stroke-linecap="round"
+      opacity="0.95"
+    />
+  </g>
+
+  <!-- ================= TYPOGRAPHY ================= -->
+  <!-- "DARDA" in Majestic Deep Emerald Green -->
+  <text
+    x="300"
+    y="420"
+    text-anchor="middle"
+    font-family="'Cinzel', 'Playfair Display', Georgia, serif"
+    font-weight="700"
+    font-size="82"
+    letter-spacing="4"
+    fill="#0C3B29"
+  >
+    DARDA
+  </text>
+
+  <!-- "— STORE —" with Golden Horizontal Rules -->
+  <g transform="translate(0, 465)">
+    <!-- Left Gold Line -->
+    <line x1="120" y1="0" x2="225" y2="0" stroke="url(#fullGoldLeaf)" stroke-width="2.5" stroke-linecap="round" />
+    
+    <!-- "STORE" Text -->
+    <text
+      x="300"
+      y="9"
+      text-anchor="middle"
+      font-family="'Plus Jakarta Sans', system-ui, sans-serif"
+      font-weight="600"
+      font-size="30"
+      letter-spacing="14"
+      fill="url(#fullGoldLeaf)"
+    >
+      STORE
+    </text>
+
+    <!-- Right Gold Line -->
+    <line x1="375" y1="0" x2="480" y2="0" stroke="url(#fullGoldLeaf)" stroke-width="2.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Tagline: "Belanja Berkah, Dukung UMKM Jamaah" -->
+  <text
+    x="300"
+    y="535"
+    text-anchor="middle"
+    font-family="'Playfair Display', Georgia, serif"
+    font-style="italic"
+    font-weight="600"
+    font-size="23"
+    letter-spacing="0.5"
+    fill="#0C3B29"
+  >
+    Belanja Berkah, Dukung UMKM Jamaah
+  </text>
+</svg>

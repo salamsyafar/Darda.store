@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
+  <defs>
+    <!-- Emerald Green Gradient for Letter D -->
+    <linearGradient id="emeraldD" x1="150" y1="80" x2="350" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#145A38" />
+      <stop offset="45%" stop-color="#0C3B29" />
+      <stop offset="100%" stop-color="#05261A" />
+    </linearGradient>
+
+    <!-- Gold Metallic Gradient for Leaf & Crescent -->
+    <linearGradient id="goldLeaf" x1="140" y1="160" x2="260" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ECC66D" />
+      <stop offset="40%" stop-color="#D4AF37" />
+      <stop offset="75%" stop-color="#B8860B" />
+      <stop offset="100%" stop-color="#8F6B08" />
+    </linearGradient>
+
+    <!-- Subtle Drop Shadow for depth -->
+    <filter id="softGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#05261A" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <g filter="url(#softGlow)">
+    <!-- 1. The Letter "D" Body (Deep Forest Emerald) -->
+    <path
+      d="M 152 86
+         C 152 86, 230 84, 280 102
+         C 336 122, 350 178, 344 228
+         C 336 284, 290 326, 234 326
+         C 200 326, 175 308, 175 308
+         L 190 286
+         C 190 286, 212 300, 236 300
+         C 272 300, 312 268, 318 222
+         C 324 180, 310 134, 266 118
+         C 226 104, 178 106, 178 106
+         Z"
+      fill="url(#emeraldD)"
+    />
+
+    <!-- Solid fill inside D to frame the arch cleanly -->
+    <path
+      d="M 152 86
+         L 152 280
+         C 152 280, 210 286, 252 280
+         C 320 270, 348 220, 348 180
+         C 348 120, 290 86, 230 86
+         Z"
+      fill="url(#emeraldD)"
+    />
+
+    <!-- 2. The Inner White Islamic Arch (Mihrab Cutout) -->
+    <path
+      d="M 246 112
+         C 246 112, 222 144, 204 172
+         C 192 192, 192 274, 192 274
+         L 298 274
+         C 298 274, 298 192, 286 172
+         C 268 144, 246 112, 246 112
+         Z"
+      fill="#FFFFFF"
+    />
+
+    <!-- 3. The Mosque Dome Silhouette (Inside Arch, Emerald) -->
+    <!-- Dome Base & Arch -->
+    <path
+      d="M 246 160
+         C 246 160, 234 184, 216 196
+         C 210 200, 210 274, 210 274
+         L 280 274
+         C 280 274, 280 200, 274 196
+         C 256 184, 246 160, 246 160
+         Z"
+      fill="#0C3B29"
+    />
+
+    <!-- 4. The Golden Crescent Moon (Hilal) -->
+    <path
+      d="M 246 130
+         C 252 130, 258 136, 258 143
+         C 258 150, 252 156, 245 156
+         C 238 156, 234 150, 234 144
+         C 234 140, 236 137, 238 135
+         C 236 139, 237 146, 242 149
+         C 247 151, 252 148, 252 143
+         C 252 137, 248 132, 246 130
+         Z"
+      fill="url(#goldLeaf)"
+    />
+
+    <!-- 5. The Golden Leaf (Swooping up at bottom-left) -->
+    <path
+      d="M 152 172
+         C 152 172, 142 220, 160 260
+         C 176 294, 214 314, 246 312
+         C 246 312, 212 300, 194 274
+         C 172 240, 176 198, 152 172
+         Z"
+      fill="url(#goldLeaf)"
+    />
+
+    <!-- Inner portion of leaf for 3D curved leaf curvature -->
+    <path
+      d="M 152 172
+         C 152 172, 178 206, 194 246
+         C 208 280, 246 312, 246 312
+         C 246 312, 222 284, 210 254
+         C 192 214, 174 186, 152 172
+         Z"
+      fill="#F3D17A"
+      opacity="0.9"
+    />
+
+    <!-- Delicate White Central Leaf Vein -->
+    <path
+      d="M 154 176
+         C 174 212, 200 256, 242 310"
+      stroke="#FFFFFF"
+      stroke-width="3"
+      stroke-linecap="round"
+      opacity="0.95"
+    />
+  </g>
+</svg>
