@@ -265,9 +265,9 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
         <span>Menampilkan <strong>{filteredProducts.length}</strong> produk tersedia</span>
       </div>
 
-      {/* Products Grid */}
+      {/* Products Grid (2 Columns on Mobile per Shopee UX) */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5">
           {filteredProducts.map((prod) => (
             <ProductCard
               key={prod.id}

@@ -19,16 +19,16 @@ export const Logo: React.FC<LogoProps> = ({
   const iconDimensions = {
     xs: 'w-7 h-7',
     sm: 'w-9 h-9',
-    md: 'w-12 h-12',
+    md: 'w-11 h-11 sm:w-12 sm:h-12',
     lg: 'w-20 h-20',
-    xl: 'w-28 h-28 sm:w-32 sm:h-32',
+    xl: 'w-28 h-28 sm:w-36 sm:h-36',
   }[size];
 
   // Wordmark "darda.store" typography scale
   const wordmarkSizes = {
     xs: 'text-base',
     sm: 'text-lg',
-    md: 'text-2xl',
+    md: 'text-xl sm:text-2xl',
     lg: 'text-4xl',
     xl: 'text-5xl sm:text-6xl',
   }[size];
@@ -37,174 +37,189 @@ export const Logo: React.FC<LogoProps> = ({
   const taglineSizes = {
     xs: 'text-[7px] tracking-[0.2em]',
     sm: 'text-[8.5px] tracking-[0.22em]',
-    md: 'text-[10px] tracking-[0.25em]',
+    md: 'text-[9.5px] sm:text-[10px] tracking-[0.24em]',
     lg: 'text-xs tracking-[0.3em]',
     xl: 'text-xs sm:text-sm tracking-[0.34em]',
   }[size];
 
-  // Official Brand Colors from Showcase:
+  // Official Brand Colors from Image 2:
   // Forest Green: #0F3D2E
   // Fresh Green: #2E7D32
-  // Warm Gold: #D4AF37
+  // Warm Gold (dot & dome): #D4AF37
   // Cream: #F8F4E9
   const dardaColor = lightMode ? 'text-[#F8F4E9]' : 'text-[#0F3D2E]';
+  const dotColor = 'text-[#D4AF37]';
   const storeColor = lightMode ? 'text-[#5FD068]' : 'text-[#2E7D32]';
-  const taglineColor = lightMode ? 'text-[#F8F4E9]/85' : 'text-[#0F3D2E]/85';
+  const taglineColor = lightMode ? 'text-[#F8F4E9]/85' : 'text-[#0F3D2E]';
 
   // Unique SVG gradient ID suffix so multiple logos on page don't collide
   const uid = React.useId().replace(/:/g, '');
 
-  // The official darda.store emblem: Lowercase 'd' shopping bag + Cream Mihrab Arch + Warm Gold Mosque Dome & Crescent
+  // The new official darda.store emblem (Image 2):
+  // Bag Handle + Pointed Mosque Mihrab Arch + Golden Dome & Crescent + 4-Scallop Store Awning & Pillars
   const Emblem = (
-    <div className={`relative flex items-center justify-center shrink-0 ${iconDimensions}`}>
+    <div
+      className={`relative flex items-center justify-center shrink-0 ${iconDimensions} ${
+        lightMode ? 'bg-[#F8F4E9] rounded-xl p-1 shadow-xs border border-[#D4AF37]/40' : ''
+      }`}
+    >
       <svg
-        viewBox="0 0 500 540"
+        viewBox="0 0 500 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full select-none drop-shadow-xs"
+        className="w-full h-full select-none"
       >
         <defs>
-          {/* Forest Green 3D Gradient (#0F3D2E) */}
-          <linearGradient id={`forestGreen-${uid}`} x1="120" y1="60" x2="390" y2="490" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#1A5C46" />
-            <stop offset="45%" stopColor="#0F3D2E" />
-            <stop offset="100%" stopColor="#08241B" />
+          {/* Forest Green Gradient (#0F3D2E to #1E7A3C) */}
+          <linearGradient id={`archGrad-${uid}`} x1="250" y1="80" x2="250" y2="480" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#1E7A3C" />
+            <stop offset="35%" stopColor="#0F4C35" />
+            <stop offset="100%" stopColor="#0A3323" />
           </linearGradient>
 
-          {/* Forest Green Handle Bevel */}
-          <linearGradient id={`forestBevel-${uid}`} x1="150" y1="50" x2="350" y2="200" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#246B53" />
-            <stop offset="55%" stopColor="#0F3D2E" />
-            <stop offset="100%" stopColor="#08241B" />
+          {/* Handle Forest Green */}
+          <linearGradient id={`handleGrad-${uid}`} x1="250" y1="20" x2="250" y2="150" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#145A3E" />
+            <stop offset="100%" stopColor="#0B3B28" />
           </linearGradient>
 
-          {/* Warm Gold 3D Mosque Dome Gradient (#D4AF37) */}
-          <linearGradient id={`warmGold-${uid}`} x1="200" y1="240" x2="310" y2="410" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#F7E08A" />
-            <stop offset="40%" stopColor="#D4AF37" />
-            <stop offset="80%" stopColor="#B88E22" />
-            <stop offset="100%" stopColor="#9A7414" />
+          {/* Warm Gold Dome Gradient (#D4AF37) */}
+          <linearGradient id={`goldDome-${uid}`} x1="190" y1="155" x2="315" y2="305" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#F6D76B" />
+            <stop offset="45%" stopColor="#E0B43B" />
+            <stop offset="100%" stopColor="#C49322" />
           </linearGradient>
 
-          {/* Cream Mihrab Arch (#F8F4E9) */}
-          <linearGradient id={`creamArch-${uid}`} x1="250" y1="185" x2="250" y2="470" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#F8F4E9" />
-            <stop offset="100%" stopColor="#EDE4CE" />
+          {/* Fresh Green Awning Center Scallops (#2E7D32) */}
+          <linearGradient id={`freshGreenAwning-${uid}`} x1="250" y1="300" x2="250" y2="395" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#2E8B40" />
+            <stop offset="100%" stopColor="#1B682C" />
           </linearGradient>
-
-          <filter id={`emblemShadow-${uid}`} x="-12%" y="-12%" width="124%" height="124%">
-            <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#072219" floodOpacity="0.2" />
-          </filter>
         </defs>
 
-        <g filter={`url(#emblemShadow-${uid})`}>
-          {/* 1. Shopping Bag Handle at Top (Forest Green #0F3D2E) */}
-          <path
-            d="M 192 142
-               C 192 78, 308 78, 308 142
-               L 308 156
-               C 295 150, 282 146, 272 144
-               L 272 138
-               C 272 104, 228 104, 228 138
-               L 228 144
-               C 218 146, 205 150, 192 156
-               Z"
-            fill={`url(#forestBevel-${uid})`}
-          />
+        {/* 1. Top Shopping Bag Handle */}
+        <path
+          d="M 168 144
+             L 168 114
+             C 168 58, 332 58, 332 114
+             L 332 144
+             L 304 130
+             L 304 114
+             C 304 78, 196 78, 196 114
+             L 196 130
+             Z"
+          fill={`url(#handleGrad-${uid})`}
+        />
 
-          {/* 2. Main Lowercase 'd' Bowl & Right Vertical Stem (Forest Green #0F3D2E) */}
-          <path
-            d="M 332 128
-               C 332 104, 350 92, 372 92
-               L 382 92
-               C 390 92, 396 98, 396 106
-               L 396 364
-               C 396 426, 368 468, 332 480
-               L 332 294
-               C 332 248, 294 218, 250 182
-               C 206 218, 168 248, 168 294
-               L 168 476
-               C 118 450, 92 396, 92 332
-               C 92 232, 164 164, 252 164
-               C 284 164, 312 173, 332 188
-               Z"
-            fill={`url(#forestGreen-${uid})`}
-          />
+        {/* 2. Outer Pointed Mosque Mihrab Arch & Outer Pillars */}
+        <path
+          d="M 250 92
+             C 292 128, 345 150, 376 188
+             C 394 210, 402 238, 402 272
+             L 402 458
+             C 402 468, 394 476, 384 476
+             L 366 476
+             L 366 388
+             C 386 378, 390 352, 376 328
+             L 356 292
+             L 356 268
+             C 356 240, 348 218, 330 200
+             C 306 176, 274 160, 250 136
+             C 226 160, 194 176, 170 200
+             C 152 218, 144 240, 144 268
+             L 144 292
+             L 124 328
+             C 110 352, 114 378, 134 388
+             L 134 476
+             L 116 476
+             C 106 476, 98 468, 98 458
+             L 98 272
+             C 98 238, 106 210, 124 188
+             C 155 150, 208 128, 250 92
+             Z"
+          fill={`url(#archGrad-${uid})`}
+        />
 
-          {/* 3. Cream Mihrab Outer Arch Frame (#F8F4E9) */}
-          <path
-            d="M 250 182
-               C 294 218, 332 248, 332 294
-               L 332 480
-               L 168 476
-               L 168 294
-               C 168 248, 206 218, 250 182
-               Z"
-            fill={`url(#creamArch-${uid})`}
-          />
+        {/* Inner Bottom Left & Right Store Pillars */}
+        <path
+          d="M 146 394 L 184 394 L 184 460 C 184 470, 176 476, 166 476 L 146 476 Z"
+          fill="#0A3323"
+        />
+        <path
+          d="M 316 394 L 354 394 L 354 476 L 334 476 C 324 476, 316 470, 316 460 Z"
+          fill="#0A3323"
+        />
 
-          {/* 4. Crisp White Inner Mihrab Arch */}
-          <path
-            d="M 250 212
-               C 284 242, 312 266, 312 304
-               L 312 440
-               L 188 440
-               L 188 304
-               C 188 266, 216 242, 250 212
-               Z"
-            fill="#FFFFFF"
-          />
+        {/* 3. Warm Gold Mosque Dome & Crescent Moon */}
+        {/* Crescent Moon */}
+        <path
+          d="M 252 158
+             C 239 158, 229 168, 229 181
+             C 229 194, 239 204, 252 204
+             C 260 204, 267 200, 271 194
+             C 265 197, 259 197, 254 194
+             C 244 190, 241 179, 245 169
+             C 247 163, 253 159, 260 159
+             C 257 158, 255 158, 252 158
+             Z"
+          fill={`url(#goldDome-${uid})`}
+        />
+        {/* Dome Finial Base */}
+        <path d="M 250 200 L 258 212 L 242 212 Z" fill={`url(#goldDome-${uid})`} />
 
-          {/* 5. Warm Gold Mosque Dome + Crescent Finial (#D4AF37) */}
-          {/* Crescent Moon (Hilal) */}
-          <path
-            d="M 252 242
-               C 242 242, 234 250, 234 260
-               C 234 270, 242 278, 252 278
-               C 258 278, 263 275, 266 271
-               C 262 273, 258 273, 254 271
-               C 246 268, 243 259, 246 251
-               C 248 246, 253 243, 258 243
-               C 256 242, 254 242, 252 242
-               Z"
-            fill={`url(#warmGold-${uid})`}
-          />
-          {/* Spire Rod */}
-          <rect x="248" y="275" width="4" height="16" rx="2" fill={`url(#warmGold-${uid})`} />
+        {/* Golden Dome */}
+        <path
+          d="M 250 208
+             C 262 228, 294 240, 316 264
+             C 326 275, 331 285, 333 292
+             L 167 292
+             C 169 285, 174 275, 184 264
+             C 206 240, 238 228, 250 208
+             Z"
+          fill={`url(#goldDome-${uid})`}
+        />
 
-          {/* Mosque Dome (Kubah) */}
-          <path
-            d="M 250 286
-               C 256 306, 272 322, 290 338
-               C 304 350, 310 368, 310 392
-               L 190 392
-               C 190 368, 196 350, 210 338
-               C 228 322, 244 306, 250 286
-               Z"
-            fill={`url(#warmGold-${uid})`}
-          />
-
-          {/* White Arch Separator Curve Above Base */}
-          <path
-            d="M 188 392 Q 250 382 312 392 L 312 402 L 188 402 Z"
-            fill="#FFFFFF"
-          />
-
-          {/* 6. Forest Green Rounded Base Bar Inside Arch (#0F3D2E) */}
-          <path
-            d="M 212 396
-               L 288 396
-               C 308 396, 324 412, 324 432
-               L 324 474
-               C 324 480, 319 484, 313 484
-               L 187 484
-               C 181 484, 176 480, 176 474
-               L 176 432
-               C 176 412, 192 396, 212 396
-               Z"
-            fill={`url(#forestGreen-${uid})`}
-          />
-        </g>
+        {/* 4. Store Awning / Canopy (4 Scallops: Outer Dark Green, Inner Fresh Green) */}
+        {/* Left Outer Scallop */}
+        <path
+          d="M 152 304
+             L 196 304
+             L 186 360
+             C 183 376, 168 386, 152 384
+             C 134 382, 124 364, 132 344
+             Z"
+          fill="#0B3B28"
+        />
+        {/* Left Center Scallop (Fresh Green) */}
+        <path
+          d="M 204 304
+             L 246 304
+             L 246 358
+             C 246 374, 233 386, 217 386
+             C 201 386, 190 373, 193 357
+             Z"
+          fill={`url(#freshGreenAwning-${uid})`}
+        />
+        {/* Right Center Scallop (Fresh Green) */}
+        <path
+          d="M 254 304
+             L 296 304
+             L 307 357
+             C 310 373, 299 386, 283 386
+             C 267 386, 254 374, 254 358
+             Z"
+          fill={`url(#freshGreenAwning-${uid})`}
+        />
+        {/* Right Outer Scallop */}
+        <path
+          d="M 304 304
+             L 348 304
+             L 368 344
+             C 376 364, 366 382, 348 384
+             C 332 386, 317 376, 314 360
+             Z"
+          fill="#0B3B28"
+        />
       </svg>
     </div>
   );
@@ -220,10 +235,11 @@ export const Logo: React.FC<LogoProps> = ({
       <div className={`flex flex-col items-center text-center select-none ${className}`}>
         {Emblem}
         <div className="mt-2.5 flex flex-col items-center">
-          {/* "darda.store" lowercase geometric wordmark */}
+          {/* "darda.store" lowercase geometric wordmark with Gold Dot */}
           <div className={`font-brand ${wordmarkSizes} leading-none tracking-tight flex items-baseline`}>
-            <span className={`font-extrabold ${dardaColor}`}>darda.</span>
-            <span className={`font-semibold ${storeColor}`}>store</span>
+            <span className={`font-extrabold ${dardaColor}`}>darda</span>
+            <span className={`font-extrabold ${dotColor}`}>.</span>
+            <span className={`font-bold ${storeColor}`}>store</span>
           </div>
 
           {/* Official Tagline: "DARI MASJID UNTUK UMKM" */}
@@ -242,10 +258,11 @@ export const Logo: React.FC<LogoProps> = ({
     <div className={`flex items-center gap-2.5 select-none ${className}`}>
       {Emblem}
       <div className="flex flex-col justify-center">
-        {/* "darda.store" */}
+        {/* "darda.store" with Gold Dot */}
         <div className={`font-brand ${wordmarkSizes} leading-none tracking-tight flex items-baseline`}>
-          <span className={`font-extrabold ${dardaColor}`}>darda.</span>
-          <span className={`font-semibold ${storeColor}`}>store</span>
+          <span className={`font-extrabold ${dardaColor}`}>darda</span>
+          <span className={`font-extrabold ${dotColor}`}>.</span>
+          <span className={`font-bold ${storeColor}`}>store</span>
         </div>
 
         {/* Tagline: "DARI MASJID UNTUK UMKM" */}

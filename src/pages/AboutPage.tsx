@@ -108,14 +108,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       {/* Official Brand Identity Showcase */}
       <div className="bg-white rounded-3xl border border-[#E5DEC9] p-6 sm:p-10 shadow-xs">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-6 overflow-hidden rounded-2xl border border-[#E5DEC9] bg-[#F8F4E9]">
+          <div className="lg:col-span-5 overflow-hidden rounded-2xl border border-[#E5DEC9] bg-white p-4 flex items-center justify-center">
             <img
-              src="/assets/aistudio/Darda.store_Islamic_Brand_Showcase_ba51a77d.png"
-              alt="darda.store — Dari Masjid Untuk UMKM Brand Showcase"
-              className="w-full h-auto object-cover"
+              src="/assets/aistudio/ChatGPT_Image_Oct_30__2026__05_03_22_PM-3_49f7d29b.png"
+              alt="darda.store — Dari Masjid Untuk UMKM Official Logo"
+              className="w-full max-w-xs h-auto object-contain"
             />
           </div>
-          <div className="lg:col-span-6 space-y-5">
+          <div className="lg:col-span-7 space-y-5">
             <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
               Identitas Visual & Filosofi Logo
             </span>
@@ -128,15 +128,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             <ul className="space-y-3 text-xs sm:text-sm text-[#0F3D2E]/85">
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-[#0F3D2E] shrink-0 mt-0.5" />
-                <span><strong>Huruf &apos;d&apos; &amp; Gagang Tas Belanja:</strong> Melambangkan inisial <em>Darussalam Dua</em> sekaligus simbol perniagaan modern yang ramah dan amanah.</span>
+                <span><strong>Gagang Tas Belanja &amp; Kanopi Toko (Awning):</strong> Melambangkan pasar dan gerai UMKM jamaah yang ramah, modern, dan amanah.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
-                <span><strong>Lengkungan Mihrab &amp; Kubah Emas:</strong> Menegaskan bahwa seluruh aktivitas ekonomi berpusat dan dinaungi oleh keberkahan Masjid.</span>
+                <span><strong>Lengkungan Mihrab &amp; Kubah Emas:</strong> Menegaskan bahwa seluruh aktivitas ekonomi berpusat dan dinaungi oleh keberkahan Masjid Darussalam Dua.</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 text-[#2E7D32] shrink-0 mt-0.5" />
-                <span><strong>4 Warna Resmi:</strong> Forest Green (<code>#0F3D2E</code>), Fresh Green (<code>#2E7D32</code>), Warm Gold (<code>#D4AF37</code>), dan Cream (<code>#F8F4E9</code>).</span>
+                <span><strong>Warna Resmi:</strong> Forest Green (<code>#0F3D2E</code>), Fresh Green (<code>#2E7D32</code>), Warm Gold (<code>#D4AF37</code>), dan Cream (<code>#F8F4E9</code>).</span>
               </li>
             </ul>
           </div>
