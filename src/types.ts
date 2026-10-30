@@ -160,3 +160,64 @@ export interface CartStoreGroup {
   totalPrice: number;
   totalQuantity: number;
 }
+
+export type HomeSectionId =
+  | 'hero'
+  | 'trust_bar'
+  | 'categories'
+  | 'jumat_berkah'
+  | 'recommendations'
+  | 'umkm_stores'
+  | 'bazar_adab';
+
+export interface HomeSectionItem {
+  id: HomeSectionId;
+  label: string;
+  description: string;
+  enabled: boolean;
+}
+
+export interface HomeConfig {
+  // 1. Header & Search Bar
+  searchPlaceholder: string;
+  popularTags: string[];
+
+  // 2. Hero Main Banner
+  heroBadge: string;
+  heroTitle: string;
+  heroTitleHighlight: string;
+  heroTitleSuffix?: string;
+  heroSubtitle: string;
+  heroPrimaryCta: string;
+  heroSecondaryCta: string;
+  showSecondaryCta: boolean;
+  heroLogoPosition: 'right' | 'left' | 'hidden';
+
+  // 3. Side Promo Banners (Right 1/3)
+  showPromoBanners: boolean;
+  promo1Badge: string;
+  promo1Title: string;
+  promo1Desc: string;
+  promo1Cta: string;
+  promo2Badge: string;
+  promo2Title: string;
+  promo2Desc: string;
+  promo2Cta: string;
+
+  // 4. Section Titles & Copywriting
+  categorySectionTitle: string;
+  jumatBerkahBadge: string;
+  jumatBerkahSubtitle: string;
+  recommendationSectionTitle: string;
+  umkmSectionBadge: string;
+  umkmSectionTitle: string;
+  adabBadge: string;
+  adabQuote: string;
+  adabCtaTitle: string;
+  adabCtaSubtitle: string;
+
+  // 5. Section Order & Visibility (Posisi Section)
+  sections: HomeSectionItem[];
+  updatedAt?: string;
+}
+

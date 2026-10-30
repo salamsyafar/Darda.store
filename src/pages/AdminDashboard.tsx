@@ -33,14 +33,16 @@ import {
   Lock,
   Key,
   UserPlus,
-  ShieldAlert
+  ShieldAlert,
+  Home
 } from 'lucide-react';
-import { AppStats, Category, Product, UMKM, ProductStatus, UMKMStatus, UMKMApplication, AdminUser, AdminRole } from '../types';
+import { AppStats, Category, Product, UMKM, ProductStatus, UMKMStatus, UMKMApplication, AdminUser, AdminRole, HomeConfig } from '../types';
 import { formatRupiah } from '../utils/formatters';
 import { ImageUpload } from '../components/ImageUpload';
 import { AdminCharts } from '../components/AdminCharts';
 import { Logo } from '../components/Logo';
 import { AdminUsersTab } from '../components/AdminUsersTab';
+import { HomeSettingsTab } from '../components/HomeSettingsTab';
 import { 
   saveProductItem, 
   deleteProductItem, 
@@ -54,7 +56,9 @@ import {
   approveAndCreateUmkm,
   saveAdminUser,
   deleteAdminUser,
-  fetchAdminUsersList
+  fetchAdminUsersList,
+  DEFAULT_HOME_CONFIG,
+  saveHomeConfig
 } from '../firebase/service';
 
 interface AdminDashboardProps {
@@ -66,6 +70,8 @@ interface AdminDashboardProps {
   currentAdminUser?: AdminUser | null;
   currentRole?: AdminRole;
   isAdminLoggedIn: boolean;
+  homeConfig?: HomeConfig;
+  onSaveHomeConfig?: (config: HomeConfig) => Promise<void>;
   onLoginStateChange: (loggedIn: boolean) => void;
   onRoleSwitch?: (role: AdminRole) => void;
   onRefreshData: () => Promise<void>;
@@ -80,6 +86,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   currentAdminUser,
   currentRole = 'super_admin',
   isAdminLoggedIn,
+  homeConfig = DEFAULT_HOME_CONFIG,
+  onSaveHomeConfig,
   onLoginStateChange,
   onRoleSwitch,
   onRefreshData,
@@ -87,8 +95,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   // Check if current user is Super Admin
   const isSuperAdmin = currentRole === 'super_admin';
 
-  // Admin tabs: 'overview' | 'umkm' | 'products' | 'categories' | 'applications' | 'admin-users'
-  const [activeTab, setActiveTab] = useState<'overview' | 'umkm' | 'products' | 'categories' | 'applications' | 'admin-users'>('overview');
+  // Admin tabs:
+  // 'overview' | 'products' | 'umkm' | 'categories' | 'applications' | 'home-settings' | 'admin-users'
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'products' | 'umkm' | 'categories' | 'applications' | 'home-settings' | 'admin-users'
+  >('overview');
 
   // Admin users state
   const [adminUsersList, setAdminUsersList] = useState<AdminUser[]>(adminUsers);
@@ -100,6 +111,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       fetchAdminUsersList().then((list) => setAdminUsersList(list));
     }
   }, [adminUsers, isAdminLoggedIn]);
+
+  // If user switches from Super Admin to Admin while on 'home-settings', return to 'overview'
+  useEffect(() => {
+    if (!isSuperAdmin && activeTab === 'home-settings') {
+      setActiveTab('overview');
+    }
+  }, [isSuperAdmin, activeTab]);
+
+  const handleSaveHomeSettings = async (newConfig: HomeConfig) => {
+    if (onSaveHomeConfig) {
+      await onSaveHomeConfig(newConfig);
+    } else {
+      await saveHomeConfig(newConfig);
+      await onRefreshData();
+    }
+    showNotification('Pengaturan halaman Home (teks, copywriting & posisi) berhasil disimpan!');
+  };
 
   const handleSaveAdminUser = async (user: AdminUser) => {
     await saveAdminUser(user);
@@ -515,12 +543,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   : 'bg-emerald-100 text-emerald-900 border border-emerald-300'
               }`}>
                 {isSuperAdmin ? <Crown className="w-3 h-3 text-amber-600" /> : <ShieldCheck className="w-3 h-3 text-emerald-600" />}
-                <span>{isSuperAdmin ? 'Super Admin (Pimpinan DKM)' : 'Admin (Operator Harian)'}</span>
+                <span>{isSuperAdmin ? 'Super Admin' : 'Admin'}</span>
               </span>
             </div>
 
             <p className="text-xs text-stone-500 mt-1">
-              Masjid Darussalam Dua • Masuk sebagai: <strong className="text-stone-800">{currentAdminUser?.name || (isSuperAdmin ? 'H. Ahmad Syafar' : 'Admin Operasional')}</strong> ({currentAdminUser?.title || (isSuperAdmin ? 'Ketua DKM' : 'Divisi Usaha')})
+              Masjid Darussalam Dua • <strong className="text-stone-800">{isSuperAdmin ? 'Super Admin' : 'Admin Operasional'}</strong>
             </p>
           </div>
         </div>
@@ -633,97 +661,127 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
       </div>
 
-      {/* Navigation Menu Tabs */}
+      {/* ========================================================
+          MANAGEMENT TABS NAVIGATION
+      ======================================================== */}
       <div className="flex items-center gap-2 border-b border-stone-200/80 pb-3 overflow-x-auto">
         <button
           onClick={() => { setActiveTab('overview'); setTabSearch(''); }}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeTab === 'overview'
               ? 'bg-[#064E3B] text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80'
           }`}
         >
-          <BarChart3 className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <BarChart3 className="w-4 h-4" />
           <span>Ringkasan & Grafik</span>
         </button>
 
         <button
           onClick={() => { setActiveTab('products'); setTabSearch(''); }}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeTab === 'products'
               ? 'bg-[#064E3B] text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80'
           }`}
         >
-          <Package className="w-3.5 h-3.5" />
+          <Package className="w-4 h-4" />
           <span>Kelola Produk ({products.length})</span>
         </button>
 
         <button
           onClick={() => { setActiveTab('umkm'); setTabSearch(''); }}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeTab === 'umkm'
               ? 'bg-[#064E3B] text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80'
           }`}
         >
-          <Users className="w-3.5 h-3.5" />
+          <Users className="w-4 h-4" />
           <span>Kelola UMKM ({umkms.length})</span>
         </button>
 
         <button
           onClick={() => { setActiveTab('categories'); setTabSearch(''); }}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeTab === 'categories'
               ? 'bg-[#064E3B] text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80'
           }`}
         >
-          <LayoutGrid className="w-3.5 h-3.5" />
+          <LayoutGrid className="w-4 h-4" />
           <span>Kelola Kategori ({categories.length})</span>
         </button>
 
         <button
           onClick={() => { setActiveTab('applications'); setTabSearch(''); }}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeTab === 'applications'
               ? 'bg-[#064E3B] text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100'
+              : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80'
           }`}
         >
-          <FileText className="w-3.5 h-3.5" />
+          <FileText className="w-4 h-4" />
           <span>Pendaftaran Jamaah ({applications.length})</span>
           {applications.filter((a) => a.status === 'pending').length > 0 && (
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#D4AF37] text-[#064E3B]">
+            <span className="ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#D4AF37] text-[#064E3B]">
               {applications.filter((a) => a.status === 'pending').length} Baru
             </span>
           )}
         </button>
 
-        {/* Tab 6: Kelola Akun Pengurus */}
+        {/* Super Admin Tab: Kelola Home */}
+        {isSuperAdmin && (
+          <button
+            onClick={() => { setActiveTab('home-settings'); setTabSearch(''); }}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'home-settings'
+                ? 'bg-[#064E3B] text-white shadow-xs ring-2 ring-[#D4AF37]/40'
+                : 'bg-amber-50/80 text-amber-900 hover:bg-amber-100 border border-amber-300/80'
+            }`}
+          >
+            <Home className="w-4 h-4 text-[#D4AF37]" />
+            <span>Kelola Home</span>
+            <span className="ml-1 text-[9px] px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 font-extrabold uppercase">
+              Super
+            </span>
+          </button>
+        )}
+
+        {/* Super Admin Tab: Kelola Pengurus */}
         <button
           onClick={() => { setActiveTab('admin-users'); setTabSearch(''); }}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeTab === 'admin-users'
-              ? 'bg-amber-700 text-white shadow-xs ring-1 ring-amber-400'
+              ? 'bg-amber-700 text-white shadow-xs ring-2 ring-amber-300/50'
               : isSuperAdmin
-              ? 'text-amber-900 bg-amber-50/70 hover:bg-amber-100/90 border border-amber-200/80'
-              : 'text-stone-500 hover:bg-stone-100'
+              ? 'bg-amber-50/80 text-amber-900 hover:bg-amber-100 border border-amber-300/80'
+              : 'bg-stone-100 text-stone-500 hover:bg-stone-200/70 border border-stone-200'
           }`}
         >
           {isSuperAdmin ? (
-            <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <Crown className="w-4 h-4 text-[#D4AF37]" />
           ) : (
             <Lock className="w-3.5 h-3.5 text-stone-400" />
           )}
           <span>Kelola Pengurus ({adminUsersList.length})</span>
-          <span className={`text-[9px] px-1.5 py-0.2 rounded font-extrabold uppercase ${
+          <span className={`ml-1 text-[9px] px-1.5 py-0.5 rounded font-extrabold uppercase ${
             isSuperAdmin ? 'bg-amber-200 text-amber-900' : 'bg-stone-200 text-stone-600'
           }`}>
             {isSuperAdmin ? 'Super' : 'Terkunci'}
           </span>
         </button>
       </div>
+
+      {/* ========================================================
+          TAB (SUPER ADMIN): KELOLA HOME (TEKS, COPYWRITING & POSISI)
+      ======================================================== */}
+      {activeTab === 'home-settings' && isSuperAdmin && (
+        <HomeSettingsTab
+          homeConfig={homeConfig}
+          onSaveHomeConfig={handleSaveHomeSettings}
+        />
+      )}
 
       {/* ========================================================
           TAB 1: OVERVIEW & INTERACTIVE CHARTS

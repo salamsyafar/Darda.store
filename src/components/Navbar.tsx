@@ -17,7 +17,7 @@ import {
   UserCheck,
   MessageCircle
 } from 'lucide-react';
-import { ActivePage } from '../types';
+import { ActivePage, HomeConfig } from '../types';
 import { Logo } from './Logo';
 
 interface NavbarProps {
@@ -33,15 +33,16 @@ interface NavbarProps {
   cartCount?: number;
   onOpenCart?: () => void;
   onLogout?: () => void;
+  homeConfig?: HomeConfig;
 }
 
 const POPULAR_SEARCH_TAGS = [
-  'Madu Al-Barokah',
-  'Brownies Lumer',
-  'Sayur Hidroponik',
-  'Gamis Syar\'i',
-  'Jumat Berkah',
-  'Kopi Arabika'
+  'Nasi Kuning',
+  'Ayam Lalapan',
+  'Pisang Nugget',
+  'Buah Apel',
+  'Kopi Aren',
+  'Jasa Cuci AC'
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -56,7 +57,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   sellerUmkmName = '',
   cartCount = 0,
   onOpenCart,
-  onLogout
+  onLogout,
+  homeConfig
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -186,7 +188,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <input
                     id="desktop-search-input"
                     type="text"
-                    placeholder="Cari di darda.store (Madu, Brownies, Gamis, Sayur)..."
+                    placeholder={
+                      homeConfig?.searchPlaceholder ||
+                      'Cari di darda.store (Nasi Kuning, Ayam Lalapan, Pisang Nugget, Kopi Aren)...'
+                    }
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
                     className="w-full pl-2 pr-2 py-1.5 sm:py-2 text-xs sm:text-sm bg-transparent text-[#0F3D2E] focus:outline-none placeholder:text-[#0F3D2E]/50"
@@ -212,7 +217,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Popular Search Keywords under Search Bar (Desktop — Mirrors Image 1) */}
               <div className="hidden md:flex items-center gap-3 mt-1.5 text-[11px] text-[#F8F4E9]/85 overflow-x-auto scrollbar-none">
-                {POPULAR_SEARCH_TAGS.map((tag) => (
+                {(homeConfig?.popularTags && homeConfig.popularTags.length > 0
+                  ? homeConfig.popularTags
+                  : POPULAR_SEARCH_TAGS
+                ).map((tag) => (
                   <button
                     key={tag}
                     type="button"

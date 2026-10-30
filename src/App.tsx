@@ -8,7 +8,8 @@ import {
   CartItem,
   AdminUser,
   AdminRole,
-  AuthRole
+  AuthRole,
+  HomeConfig
 } from './types';
 import { 
   fetchProductsList, 
@@ -16,7 +17,10 @@ import {
   fetchCategoriesList, 
   fetchAppStats, 
   recordVisitor,
-  fetchAdminUsersList
+  fetchAdminUsersList,
+  fetchHomeConfig,
+  saveHomeConfig,
+  DEFAULT_HOME_CONFIG
 } from './firebase/service';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -141,6 +145,7 @@ export default function App() {
   });
 
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+  const [homeConfig, setHomeConfig] = useState<HomeConfig>(DEFAULT_HOME_CONFIG);
 
   const [sellerUmkmId, setSellerUmkmId] = useState<string | null>(() => {
     return localStorage.getItem('darda_seller_umkm_id') || null;
@@ -156,23 +161,30 @@ export default function App() {
   // Load all data on mount
   const refreshAllData = async () => {
     try {
-      const [pList, uList, cList, statData, aList] = await Promise.all([
+      const [pList, uList, cList, statData, aList, hCfg] = await Promise.all([
         fetchProductsList(),
         fetchUmkmList(),
         fetchCategoriesList(),
         fetchAppStats(),
         fetchAdminUsersList(),
+        fetchHomeConfig(),
       ]);
       setProducts(pList);
       setUmkms(uList);
       setCategories(cList);
       setStats(statData);
       setAdminUsers(aList);
+      setHomeConfig(hCfg);
     } catch (err) {
       console.error('Error fetching data:', err);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSaveHomeConfig = async (newConfig: HomeConfig) => {
+    setHomeConfig(newConfig);
+    await saveHomeConfig(newConfig);
   };
 
   useEffect(() => {
@@ -279,6 +291,7 @@ export default function App() {
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
         onLogout={handleLogout}
+        homeConfig={homeConfig}
       />
 
       {/* Main Content Area */}
@@ -298,6 +311,7 @@ export default function App() {
                 categories={categories}
                 products={products}
                 umkms={umkms}
+                homeConfig={homeConfig}
                 onNavigate={navigateTo}
                 onSelectProduct={handleSelectProduct}
                 onSelectUmkm={handleSelectUmkm}
@@ -415,6 +429,8 @@ export default function App() {
                 currentAdminUser={currentAdminUser}
                 currentRole={authRole === 'super_admin' ? 'super_admin' : 'admin'}
                 isAdminLoggedIn={isAdminLoggedIn}
+                homeConfig={homeConfig}
+                onSaveHomeConfig={handleSaveHomeConfig}
                 onLoginStateChange={handleAdminLoginStateChange}
                 onRoleSwitch={(newRole) => {
                   setAuthRole(newRole);

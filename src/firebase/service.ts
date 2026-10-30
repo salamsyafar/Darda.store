@@ -11,7 +11,7 @@ import {
   where 
 } from 'firebase/firestore';
 import { db } from './config';
-import { Category, Product, UMKM, AppStats, UMKMApplication, SellerOrderNote, AdminUser } from '../types';
+import { Category, Product, UMKM, AppStats, UMKMApplication, SellerOrderNote, AdminUser, HomeConfig } from '../types';
 import { INITIAL_CATEGORIES, INITIAL_PRODUCTS, INITIAL_UMKM } from '../data/initialData';
 
 // Validate Firestore Connection on module load
@@ -43,7 +43,8 @@ const STORAGE_KEYS = {
   VISITORS: 'darda_visitors_count',
   INQUIRIES: 'darda_inquiries_count',
   ORDERS: 'darda_seller_orders',
-  ADMIN_USERS: 'darda_admin_users_data'
+  ADMIN_USERS: 'darda_admin_users_data',
+  HOME_CONFIG: 'darda_home_config_data'
 };
 
 // ----------------------------------------------------
@@ -725,4 +726,197 @@ export async function deleteAdminUser(id: string): Promise<void> {
     }
   }
 }
+
+// ----------------------------------------------------
+// 9. HOME PAGE CMS & LAYOUT CONFIGURATION SERVICES
+// ----------------------------------------------------
+
+export const DEFAULT_HOME_CONFIG: HomeConfig = {
+  searchPlaceholder: 'Cari di darda.store (Nasi Kuning, Ayam Lalapan, Pisang Nugget, Kopi Aren)...',
+  popularTags: [
+    'Nasi Kuning',
+    'Ayam Lalapan',
+    'Pisang Nugget',
+    'Buah Apel',
+    'Kopi Aren',
+    'Jasa Cuci AC'
+  ],
+  heroBadge: '✨ DARDA.STORE | MARKETPLACE UMKM JAMAAH',
+  heroTitle: 'Dari Masjid',
+  heroTitleHighlight: 'Untuk UMKM',
+  heroTitleSuffix: ', Belanja Halal & Berkah',
+  heroSubtitle:
+    'Temukan beragam produk pilihan UMKM. Dari kuliner rumahan, cemilan, sayuran hidroponik, buah-buahan, busana muslim, hingga aneka macam jasa. Semua dalam satu tempat, untuk belanja yang lebih bermakna dan berkah',
+  heroPrimaryCta: '🛍️ Mulai Belanja',
+  heroSecondaryCta: 'Buka Toko Gratis',
+  showSecondaryCta: true,
+  heroLogoPosition: 'right',
+
+  showPromoBanners: true,
+  promo1Badge: '100% Amanah DKM',
+  promo1Title: 'Produk Lokal Jamaah Terverifikasi',
+  promo1Desc: 'Bebas komisi 0%, langsung terhubung ke WhatsApp pemilik usaha.',
+  promo1Cta: 'Cek Katalog',
+  promo2Badge: 'Darda Barokah',
+  promo2Title: 'Paket Sedekah & Jumat Berkah',
+  promo2Desc: 'Salurkan konsumsi jamaah & santri tahfidz Masjid Darussalam Dua.',
+  promo2Cta: 'Pilih Paket Berkah',
+
+  categorySectionTitle: 'Kategori Produk Jamaah',
+  jumatBerkahBadge: 'JUMAT BERKAH',
+  jumatBerkahSubtitle: 'Paket Sedekah Konsumsi Jamaah & Santri Tahfidz',
+  recommendationSectionTitle: 'Rekomendasi Produk Jamaah',
+  umkmSectionBadge: 'Toko Resmi Jamaah',
+  umkmSectionTitle: 'Mitra UMKM Terverifikasi Masjid Darussalam Dua',
+  adabBadge: 'Adab Perniagaan Islami',
+  adabQuote:
+    '"Pedagang yang jujur dan dapat dipercaya (amanah) akan bersama para Nabi, orang-orang yang shiddiq, dan para syuhada." (HR. Tirmidzi)',
+  adabCtaTitle: 'Punya Produk UMKM?',
+  adabCtaSubtitle: 'Gratis 100% khusus jamaah',
+
+  sections: [
+    {
+      id: 'hero',
+      label: 'Banner Utama & Promo Pendamping',
+      description: 'Area hero copywriting utama, tombol CTA, kartu logo, dan 2 banner promo samping.',
+      enabled: true,
+    },
+    {
+      id: 'trust_bar',
+      label: 'Baris Info Keunggulan (Trust Bar)',
+      description: '4 poin keunggulan: Terverifikasi DKM, 0% Potongan, Langsung WA, Jumlah Toko.',
+      enabled: true,
+    },
+    {
+      id: 'categories',
+      label: 'Kategori Produk Jamaah',
+      description: 'Deretan ikon kategori produk di bawah banner utama.',
+      enabled: true,
+    },
+    {
+      id: 'jumat_berkah',
+      label: 'Program Jumat Berkah & Sedekah',
+      description: 'Katalog khusus produk paket sedekah konsumsi jamaah & santri.',
+      enabled: true,
+    },
+    {
+      id: 'recommendations',
+      label: 'Rekomendasi Produk Jamaah (Katalog Utama)',
+      description: 'Daftar produk utama dengan tab filter kategori (2 kolom di HP).',
+      enabled: true,
+    },
+    {
+      id: 'umkm_stores',
+      label: 'Mitra Toko UMKM Terverifikasi',
+      description: 'Daftar profil toko resmi milik jamaah Masjid Darussalam Dua.',
+      enabled: true,
+    },
+    {
+      id: 'bazar_adab',
+      label: 'Agenda Pojok Berkah & Adab Perniagaan',
+      description: 'Informasi jadwal bazar masjid dan kutipan hadits adab perniagaan.',
+      enabled: true,
+    },
+  ],
+  updatedAt: new Date().toISOString(),
+};
+
+function normalizeHeroTitleConfig(config: HomeConfig): { config: HomeConfig; migrated: boolean } {
+  // Replace legacy "Belanja dari Jamaah, Berkah untuk Semua." or "Dari Masjid Untuk UMKM, Berkah untuk Semua."
+  // with "Dari Masjid Untuk UMKM, Belanja Halal & Berkah"
+  const isLegacyHighlight =
+    config.heroTitleHighlight?.trim() === 'Berkah untuk Semua.' ||
+    config.heroTitleHighlight?.trim() === 'Berkah untuk Semua';
+  const isLegacyTitle =
+    config.heroTitle?.trim() === 'Belanja dari Jamaah,' ||
+    config.heroTitle?.trim() === 'Dari Masjid Untuk UMKM,' ||
+    config.heroTitle?.trim() === 'Dari Masjid Untuk UMKM';
+
+  if (isLegacyHighlight || isLegacyTitle) {
+    return {
+      config: {
+        ...config,
+        heroTitle: 'Dari Masjid',
+        heroTitleHighlight: 'Untuk UMKM',
+        heroTitleSuffix: ', Belanja Halal & Berkah',
+      },
+      migrated: true,
+    };
+  }
+
+  return { config, migrated: false };
+}
+
+export async function fetchHomeConfig(): Promise<HomeConfig> {
+  try {
+    const docRef = doc(db, 'stats', 'home_config');
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const data = snap.data() as Partial<HomeConfig>;
+      const rawMerged: HomeConfig = {
+        ...DEFAULT_HOME_CONFIG,
+        ...data,
+        sections:
+          Array.isArray(data.sections) && data.sections.length > 0
+            ? data.sections
+            : DEFAULT_HOME_CONFIG.sections,
+        popularTags:
+          Array.isArray(data.popularTags) && data.popularTags.length > 0
+            ? data.popularTags
+            : DEFAULT_HOME_CONFIG.popularTags,
+      };
+      const { config: merged, migrated } = normalizeHeroTitleConfig(rawMerged);
+      localStorage.setItem(STORAGE_KEYS.HOME_CONFIG, JSON.stringify(merged));
+      if (migrated) {
+        setDoc(docRef, merged, { merge: true }).catch(() => {});
+      }
+      return merged;
+    }
+  } catch (err) {
+    console.warn('Firestore fetchHomeConfig error, using local fallback:', err);
+  }
+
+  const cached = localStorage.getItem(STORAGE_KEYS.HOME_CONFIG);
+  if (cached) {
+    try {
+      const parsed = JSON.parse(cached) as Partial<HomeConfig>;
+      const rawMerged: HomeConfig = {
+        ...DEFAULT_HOME_CONFIG,
+        ...parsed,
+        sections:
+          Array.isArray(parsed.sections) && parsed.sections.length > 0
+            ? parsed.sections
+            : DEFAULT_HOME_CONFIG.sections,
+        popularTags:
+          Array.isArray(parsed.popularTags) && parsed.popularTags.length > 0
+            ? parsed.popularTags
+            : DEFAULT_HOME_CONFIG.popularTags,
+      };
+      const { config: merged } = normalizeHeroTitleConfig(rawMerged);
+      localStorage.setItem(STORAGE_KEYS.HOME_CONFIG, JSON.stringify(merged));
+      return merged;
+    } catch {
+      // ignore
+    }
+  }
+
+  return DEFAULT_HOME_CONFIG;
+}
+
+export async function saveHomeConfig(config: HomeConfig): Promise<void> {
+  const payload: HomeConfig = {
+    ...config,
+    updatedAt: new Date().toISOString(),
+  };
+
+  localStorage.setItem(STORAGE_KEYS.HOME_CONFIG, JSON.stringify(payload));
+
+  try {
+    const docRef = doc(db, 'stats', 'home_config');
+    await setDoc(docRef, payload, { merge: true });
+  } catch (err) {
+    console.warn('Firestore saveHomeConfig failed, saved locally:', err);
+  }
+}
+
 
