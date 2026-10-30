@@ -264,7 +264,7 @@ export default function App() {
     : [];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF9] text-stone-900 selection:bg-[#064E3B] selection:text-[#D4AF37]">
+    <div className="min-h-screen flex flex-col bg-[#F8F4E9] text-[#0F3D2E] selection:bg-[#0F3D2E] selection:text-[#D4AF37]">
       {/* Top Header Navbar */}
       <Navbar
         activePage={activePage}
@@ -285,9 +285,9 @@ export default function App() {
       <main className="flex-1">
         {isLoading ? (
           <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
-            <div className="w-12 h-12 border-4 border-[#064E3B] border-t-[#D4AF37] rounded-full animate-spin" />
-            <p className="text-xs font-semibold text-[#064E3B] tracking-wider uppercase">
-              Memuat Katalog Darda Store...
+            <div className="w-12 h-12 border-4 border-[#0F3D2E] border-t-[#D4AF37] rounded-full animate-spin" />
+            <p className="text-xs font-semibold text-[#0F3D2E] tracking-wider uppercase">
+              Memuat Katalog darda.store...
             </p>
           </div>
         ) : (

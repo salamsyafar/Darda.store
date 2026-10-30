@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { 
-  LogIn, 
-  AlertCircle, 
-  ArrowLeft, 
   Lock, 
   Mail, 
+  Eye, 
+  EyeOff, 
+  AlertCircle, 
   Sparkles,
   ArrowRight,
   UserPlus,
@@ -16,7 +16,7 @@ import { Logo } from '../components/Logo';
 interface LoginPageProps {
   umkms: UMKM[];
   adminUsers?: AdminUser[];
-  onAdminLogin: (role: AdminRole, adminUser?: AdminUser) => void;
+  onAdminLogin: (role?: AdminRole, adminUser?: AdminUser) => void;
   onSellerLogin: (umkmId: string) => void;
   onNavigate: (page: any) => void;
 }
@@ -26,283 +26,243 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   adminUsers = [],
   onAdminLogin,
   onSellerLogin,
-  onNavigate
+  onNavigate,
 }) => {
-  // Clean single login credentials state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Admin WhatsApp Contact requested by user
-  const adminWaNumber = '087877686424';
-  const adminWaInternational = '6287877686424';
-
-  // Dynamic role detection based on username/email address
-  const detectRoleAndAccount = (identifier: string) => {
-    const clean = identifier.trim().toLowerCase();
-
-    // 1. Check in configured admin users list
-    const foundAdmin = adminUsers.find(
-      a => (a.email && a.email.toLowerCase() === clean) || 
-           (a.username && a.username.toLowerCase() === clean) ||
-           (a.name && clean.includes(a.name.toLowerCase().replace(/\s+/g, '')))
-    );
-
-    if (foundAdmin) {
-      return {
-        role: foundAdmin.role, // 'super_admin' | 'admin'
-        adminUser: foundAdmin,
-        umkm: null
-      };
-    }
-    
-    // 2. Fallback heuristic detection for super admin & admin
-    if (
-      clean === 'salamsyafar@gmail.com' ||
-      clean === 'superadmin' ||
-      clean.includes('superadmin') ||
-      clean === 'ketua@masjid.id'
-    ) {
-      return {
-        role: 'super_admin' as const,
-        adminUser: {
-          id: 'admin_super_1',
-          name: 'H. Ahmad Syafar',
-          email: 'salamsyafar@gmail.com',
-          username: 'superadmin',
-          role: 'super_admin' as const,
-          phone: '087877686424',
-          title: 'Ketua DKM / Pimpinan Utama',
-          status: 'active' as const,
-          created_at: new Date().toISOString()
-        },
-        umkm: null
-      };
-    }
-
-    if (
-      clean === 'admin' || 
-      clean.includes('admin') || 
-      clean === 'pengurus@masjid.id' ||
-      clean === 'darda@masjid.id' ||
-      clean === 'pengurus@dardastore.id'
-    ) {
-      return {
-        role: 'admin' as const,
-        adminUser: {
-          id: 'admin_op_1',
-          name: 'Ustadz Farhan',
-          email: 'pengurus@dardastore.id',
-          username: 'admin',
-          role: 'admin' as const,
-          phone: '081234567890',
-          title: 'Divisi UMKM & Operasional Harian',
-          status: 'active' as const,
-          created_at: new Date().toISOString()
-        },
-        umkm: null
-      };
-    }
-
-    // 3. Match seller UMKM by username, email, ID, or business name
-    const foundDirect = umkms.find((u) => 
-      (u.username && clean === u.username.toLowerCase()) ||
-      (u.email && clean === u.email.toLowerCase()) ||
-      (u.id && clean === u.id.toLowerCase()) ||
-      clean.includes(u.business_name.toLowerCase().replace(/\s+/g, '')) ||
-      clean.includes(u.owner_name.toLowerCase().replace(/\s+/g, ''))
-    );
-
-    let targetUmkm = foundDirect;
-    if (!targetUmkm) {
-      if (clean.includes('madu')) {
-        targetUmkm = umkms.find((u) => u.business_name.toLowerCase().includes('madu'));
-      } else if (clean.includes('fashion') || clean.includes('rayan') || clean.includes('busana')) {
-        targetUmkm = umkms.find((u) => u.category.toLowerCase().includes('fashion'));
-      } else if (clean.includes('aisyah') || clean.includes('bakery') || clean.includes('brownies') || clean.includes('kue')) {
-        targetUmkm = umkms.find((u) => u.business_name.toLowerCase().includes('aisyah') || u.category.toLowerCase().includes('kuliner'));
-      }
-    }
-
-    return {
-      role: 'seller' as const,
-      adminUser: null,
-      umkm: targetUmkm || umkms[0]
-    };
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const trimmedIdentifier = email.trim();
-    if (!trimmedIdentifier) {
-      setError('Silakan masukkan username atau email akun Anda.');
+    const cleanInput = email.trim().toLowerCase();
+    const cleanPass = password.trim();
+
+    if (!cleanInput || !cleanPass) {
+      setError('Mohon masukkan Username / Email dan Kata Sandi Anda.');
       return;
     }
 
-    const trimmedPass = password.trim();
-    if (!trimmedPass) {
-      setError('Silakan masukkan kata sandi Anda.');
+    // 1. Check against Admin Users stored in database / state
+    const matchedAdmin = adminUsers.find(
+      (a) =>
+        a.status === 'active' &&
+        (a.email.toLowerCase() === cleanInput || a.username.toLowerCase() === cleanInput) &&
+        a.password === cleanPass
+    );
+
+    if (matchedAdmin) {
+      onAdminLogin(matchedAdmin.role, matchedAdmin);
       return;
     }
 
-    const authResult = detectRoleAndAccount(trimmedIdentifier);
+    // 2. Fallback Super Admin Credentials (DKM Pimpinan)
+    const isFallbackSuperAdmin =
+      (cleanInput === 'admin@masjiddarussalamdua.id' ||
+        cleanInput === 'superadmin' ||
+        cleanInput === 'salamsyafar@gmail.com') &&
+      (cleanPass === 'darda2026' || cleanPass === 'Bismillah2026' || cleanPass === 'superadmin123');
 
-    if (authResult.role === 'super_admin') {
-      const targetPass = authResult.adminUser?.password || 'darda2026';
-      if (trimmedPass !== targetPass && trimmedPass !== 'darda2026' && trimmedPass !== 'superadmin2026') {
-        setError('Kata sandi Super Admin tidak sesuai.');
-        return;
-      }
-      onAdminLogin('super_admin', authResult.adminUser || undefined);
-    } else if (authResult.role === 'admin') {
-      const targetPass = authResult.adminUser?.password || 'admin123';
-      if (trimmedPass !== targetPass && trimmedPass !== 'admin123' && trimmedPass !== 'darda2026') {
-        setError('Kata sandi Admin Operasional tidak sesuai.');
-        return;
-      }
-      onAdminLogin('admin', authResult.adminUser || undefined);
-    } else {
-      const umkm = authResult.umkm;
-      if (umkm && umkm.password && trimmedPass !== umkm.password) {
-        setError(`Kata sandi untuk akun "${umkm.business_name}" tidak cocok. Silakan periksa pesan WhatsApp/Email dari Pengurus.`);
-        return;
-      }
-      onSellerLogin(umkm?.id || umkms[0]?.id);
+    if (isFallbackSuperAdmin) {
+      onAdminLogin('super_admin', {
+        id: 'admin-super-1',
+        name: 'H. Ahmad Syafar (Ketua DKM)',
+        username: 'superadmin',
+        email: cleanInput.includes('@') ? cleanInput : 'admin@masjiddarussalamdua.id',
+        password: cleanPass,
+        role: 'super_admin',
+        title: 'Ketua DKM & Pimpinan Utama Darda Store',
+        whatsapp: '6287877686424',
+        status: 'active',
+        created_at: new Date().toISOString(),
+      });
+      return;
     }
+
+    // 3. Fallback Regular Admin Credentials (Pengurus Operasional)
+    const isFallbackRegularAdmin =
+      (cleanInput === 'operator@masjiddarussalamdua.id' ||
+        cleanInput === 'admin_operasional' ||
+        cleanInput === 'admin' ||
+        cleanInput === 'pengurus@masjiddarussalamdua.id') &&
+      (cleanPass === 'admin123' || cleanPass === 'darda2026' || cleanPass === 'pengurus123');
+
+    if (isFallbackRegularAdmin) {
+      onAdminLogin('admin', {
+        id: 'admin-op-1',
+        name: 'Ust. Farhan Ramadhan',
+        username: 'admin_operasional',
+        email: 'operator@masjiddarussalamdua.id',
+        password: cleanPass,
+        role: 'admin',
+        title: 'Pengurus Divisi Ekonomi & Kurasi Produk',
+        whatsapp: '6287877686424',
+        status: 'active',
+        created_at: new Date().toISOString(),
+      });
+      return;
+    }
+
+    // 4. Check UMKM Seller credentials (matches username, email, or WhatsApp number)
+    const matchedUmkm = umkms.find((u) => {
+      const uEmail = (u.email || '').trim().toLowerCase();
+      const uUsername = (u.username || '').trim().toLowerCase();
+      const uWa = (u.whatsapp || '').replace(/\D/g, '');
+      const inputDigits = cleanInput.replace(/\D/g, '');
+
+      const identifierMatch =
+        (uUsername && uUsername === cleanInput) ||
+        (uEmail && uEmail === cleanInput) ||
+        (inputDigits.length >= 9 && uWa.endsWith(inputDigits.slice(-9)));
+
+      const passMatch = (u.password || 'umkm123') === cleanPass;
+      return identifierMatch && passMatch;
+    });
+
+    if (matchedUmkm) {
+      if (matchedUmkm.status !== 'active') {
+        setError('Akun toko Anda sedang dinonaktifkan sementara. Silakan hubungi Pengurus DKM.');
+        return;
+      }
+      onSellerLogin(matchedUmkm.id);
+      return;
+    }
+
+    setError(
+      'Username/Email atau Kata Sandi tidak sesuai. Pastikan Anda telah disetujui oleh Admin DKM.'
+    );
   };
 
   return (
-    <div className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-50 via-emerald-50/20 to-stone-50 flex items-center justify-center">
+    <div className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 bg-[#F8F4E9] flex items-center justify-center">
       <div className="w-full max-w-lg space-y-6">
-        
-        {/* Back navigation */}
-        <button
-          onClick={() => onNavigate('home')}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-stone-600 hover:text-[#064E3B] transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Kembali ke Beranda Katalog</span>
-        </button>
+        {/* Card */}
+        <div className="bg-white rounded-3xl border border-[#E5DEC9] shadow-xl shadow-[#0F3D2E]/5 p-8 sm:p-10 space-y-7 relative overflow-hidden">
+          {/* Top Accent Stripe in Official Brand Palette */}
+          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#0F3D2E] via-[#2E7D32] to-[#D4AF37]" />
 
-        {/* Main Card */}
-        <div className="bg-white rounded-3xl border border-stone-200/80 p-6 sm:p-8 shadow-xl space-y-6">
-          
-          {/* Header with Official Logo */}
-          <div className="text-center space-y-3 pt-2">
-            <div className="flex justify-center mb-1">
+          {/* Logo & Header */}
+          <div className="text-center space-y-2 pt-2">
+            <div className="flex justify-center mb-3">
               <Logo size="lg" variant="full" showTagline={true} />
             </div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/70 text-[#064E3B] text-xs font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F8F4E9] border border-[#E5DEC9] text-[#2E7D32] text-xs font-bold">
               <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
-              <span>Portal Masuk Akun</span>
+              <span>Portal Akses Terpadu</span>
             </div>
-            <p className="text-xs sm:text-sm text-stone-500 max-w-sm mx-auto">
-              Silakan masukkan email dan kata sandi Anda untuk mengakses dashboard pengurus atau toko UMKM.
+            <h1 className="font-serif-title text-2xl sm:text-3xl font-bold text-[#0F3D2E]">
+              Login darda.store
+            </h1>
+            <p className="text-xs sm:text-sm text-[#0F3D2E]/70 max-w-sm mx-auto leading-relaxed">
+              Masukkan Username atau Email beserta Password Anda. Sistem otomatis mengenali akses Pengurus DKM maupun Mitra UMKM.
             </p>
           </div>
 
-          {/* Error notification */}
+          {/* Error Alert */}
           {error && (
-            <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="p-4 rounded-2xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-800 text-xs leading-relaxed">
+              <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
-          {/* ========================================================= */}
-          {/* SINGLE LOGIN FORM: EMAIL & KATA SANDI ONLY */}
-          {/* ========================================================= */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            
-            {/* Identifier Field: Username or Email */}
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-stone-700 mb-1.5">
-                Username atau Email Akun
+              <label className="block text-xs font-bold text-[#0F3D2E] uppercase tracking-wider mb-2">
+                Username / Email Akun
               </label>
               <div className="relative">
                 <input
+                  id="login-email-input"
                   type="text"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Masukkan username atau email (Admin / Seller)"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-300 text-xs sm:text-sm focus:ring-2 focus:ring-[#064E3B] focus:border-transparent focus:outline-none"
+                  placeholder="Username, Email, atau No. WhatsApp..."
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-[#F8F4E9]/60 border border-[#DED6C1] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E7D32] text-sm text-[#0F3D2E] transition-all"
                 />
-                <Mail className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
+                <Mail className="w-4 h-4 text-[#2E7D32] absolute left-4 top-4" />
               </div>
             </div>
 
-            {/* Password Field */}
             <div>
-              <label className="block text-xs font-semibold text-stone-700 mb-1.5">
-                Kata Sandi
+              <label className="block text-xs font-bold text-[#0F3D2E] uppercase tracking-wider mb-2">
+                Kata Sandi (Password)
               </label>
               <div className="relative">
                 <input
-                  type="password"
+                  id="login-password-input"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-300 text-xs sm:text-sm focus:ring-2 focus:ring-[#064E3B] focus:border-transparent focus:outline-none"
+                  placeholder="Masukkan kata sandi akun..."
+                  className="w-full pl-11 pr-11 py-3.5 rounded-xl bg-[#F8F4E9]/60 border border-[#DED6C1] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E7D32] text-sm text-[#0F3D2E] transition-all"
                 />
-                <Lock className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
+                <Lock className="w-4 h-4 text-[#2E7D32] absolute left-4 top-4" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-3.5 p-1 text-[#0F3D2E]/50 hover:text-[#0F3D2E]"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
-            {/* Submit Button */}
             <button
+              id="login-submit-btn"
               type="submit"
-              id="unified-login-submit-btn"
-              className="w-full py-3.5 px-4 rounded-xl bg-[#064E3B] hover:bg-[#047857] text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 mt-2"
+              className="w-full py-4 rounded-xl font-bold text-sm text-[#F8F4E9] bg-[#0F3D2E] hover:bg-[#2E7D32] shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <LogIn className="w-4 h-4 text-[#D4AF37]" />
-              <span>Masuk ke Akun</span>
-              <ArrowRight className="w-4 h-4 text-emerald-200" />
+              <span>Masuk ke Dashboard</span>
+              <ArrowRight className="w-4 h-4 text-[#D4AF37]" />
             </button>
           </form>
 
           {/* ========================================================= */}
           {/* BANTUAN & KONTAK ADMIN DARDA STORE (087877686424) */}
           {/* ========================================================= */}
-          <div className="pt-2 border-t border-stone-100">
-            <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-emerald-100 text-[#064E3B] shrink-0">
-                  <MessageCircle className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-xs text-stone-900">
-                    Butuh Bantuan Akun?
-                  </h4>
-                  <a
-                    href={`https://wa.me/${adminWaInternational}?text=${encodeURIComponent(
-                      "Assalamu'alaikum Admin Darda Store, saya butuh bantuan mengenai akun/login Darda Store."
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[11px] text-[#064E3B] hover:underline font-semibold flex items-center gap-1 mt-0.5"
-                  >
-                    <span>Hubungi Admin: 0878-7768-6424</span>
-                  </a>
-                </div>
+          <div className="pt-2 border-t border-[#EFE9D8]">
+            <div className="p-3.5 rounded-2xl bg-[#F8F4E9] border border-[#E5DEC9] flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-center sm:text-left">
+                <p className="text-xs font-bold text-[#0F3D2E]">
+                  Lupa Password atau Butuh Bantuan Akun?
+                </p>
+                <p className="text-[11px] text-[#0F3D2E]/70">
+                  Hubungi Admin DKM: <strong>0878-7768-6424</strong>
+                </p>
               </div>
-
-              <button
-                type="button"
-                onClick={() => onNavigate('register-umkm')}
-                className="shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-bold text-[#064E3B] bg-white border border-emerald-300 hover:bg-emerald-50 transition-colors flex items-center gap-1 cursor-pointer"
+              <a
+                href="https://wa.me/6287877686424?text=Assalamu'alaikum%20Admin%20darda.store%2C%20saya%20butuh%20bantuan%20mengenai%20login%20akun%20toko%20UMKM%20saya."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#2E7D32] hover:bg-[#0F3D2E] text-white text-xs font-bold shadow-xs transition-all shrink-0"
               >
-                <UserPlus className="w-3 h-3 text-[#D4AF37]" />
-                <span>Daftar UMKM</span>
-              </button>
+                <MessageCircle className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <span>Chat Admin WA</span>
+              </a>
             </div>
           </div>
 
+          {/* Register Callout for New Sellers */}
+          <div className="pt-2 border-t border-[#EFE9D8] text-center">
+            <p className="text-xs text-[#0F3D2E]/75 mb-2.5">
+              Belum punya akun toko UMKM di darda.store?
+            </p>
+            <button
+              type="button"
+              onClick={() => onNavigate('register-umkm')}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F3D2E] hover:text-[#2E7D32] bg-[#F8F4E9] hover:bg-[#EFE9D8] px-4 py-2.5 rounded-xl border border-[#DED6C1] transition-colors cursor-pointer"
+            >
+              <UserPlus className="w-3.5 h-3.5 text-[#2E7D32]" />
+              <span>Ajukan Pendaftaran UMKM Baru</span>
+            </button>
+          </div>
         </div>
-
       </div>
     </div>
   );

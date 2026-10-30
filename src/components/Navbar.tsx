@@ -5,9 +5,6 @@ import {
   X, 
   ShieldCheck, 
   ShoppingBag, 
-  Users, 
-  Info, 
-  LayoutGrid, 
   Sparkles, 
   HeartHandshake,
   Store,
@@ -66,23 +63,26 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs">
-      {/* Top Banner with Islamic touch */}
-      <div className="bg-[#064E3B] text-white text-xs py-1.5 px-4">
+    <header className="sticky top-0 z-40 bg-[#F8F4E9]/95 backdrop-blur-md border-b border-[#E5DEC9] shadow-2xs">
+      {/* Top Banner in Official Forest Green (#0F3D2E) */}
+      <div className="bg-[#0F3D2E] text-[#F8F4E9] text-xs py-1.5 px-4 border-b border-[#195843]">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
-            <span className="font-medium tracking-wide">
-              Masjid Darussalam Dua • Program Pemberdayaan Ekonomi Umat
+            <span className="font-semibold tracking-wider uppercase text-[#D4AF37] text-[10px]">
+              DARI MASJID UNTUK UMKM
+            </span>
+            <span className="text-[#F8F4E9]/40">•</span>
+            <span className="font-medium tracking-wide text-[#F8F4E9]/90 truncate">
+              Masjid Darussalam Dua
             </span>
           </div>
 
-          <div className="hidden sm:flex items-center gap-4 text-stone-200 text-[11px]">
+          <div className="hidden sm:flex items-center gap-4 text-[#F8F4E9]/85 text-[11px]">
             <span className="flex items-center gap-1">
               <HeartHandshake className="w-3.5 h-3.5 text-[#D4AF37]" />
               100% Produk Halal & Berkah
             </span>
-            <span>•</span>
+            <span className="text-[#F8F4E9]/30">•</span>
             <button
               onClick={() => {
                 if (isAdminLoggedIn) onNavigate('admin');
@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {onLogout && (isAdminLoggedIn || isSellerLoggedIn) && (
               <button
                 onClick={onLogout}
-                className="text-stone-300 hover:text-red-300 transition-colors ml-1"
+                className="text-[#F8F4E9]/70 hover:text-red-300 transition-colors ml-1 cursor-pointer"
                 title="Keluar / Logout"
               >
                 (Keluar)
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div 
             id="brand-logo-btn"
             onClick={() => onNavigate('home')} 
-            className="cursor-pointer select-none py-2"
+            className="cursor-pointer select-none py-2 shrink-0"
           >
             <Logo size="md" variant="horizontal" />
           </div>
@@ -142,9 +142,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 placeholder="Cari produk (contoh: Brownies, Madu, Gamis)..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-full text-sm bg-stone-100 border border-stone-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#064E3B] focus:border-transparent transition-all placeholder:text-stone-400"
+                className="w-full pl-10 pr-4 py-2.5 rounded-full text-sm bg-white border border-[#DED6C1] text-[#0F3D2E] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all placeholder:text-[#0F3D2E]/45 shadow-2xs"
               />
-              <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5 pointer-events-none" />
+              <Search className="w-4 h-4 text-[#2E7D32] absolute left-3.5 top-3.5 pointer-events-none" />
             </form>
           </div>
 
@@ -158,19 +158,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={item.page}
                   id={`nav-link-${item.page}`}
                   onClick={() => onNavigate(item.page)}
-                  className={`px-3.5 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-3.5 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                     isActive
-                      ? 'text-[#064E3B] bg-emerald-50 font-semibold'
+                      ? 'text-white bg-[#0F3D2E] font-semibold shadow-2xs'
                       : isRegister
-                      ? 'text-[#064E3B] bg-emerald-50/80 hover:bg-emerald-100 font-semibold border border-emerald-200/60'
-                      : 'text-stone-600 hover:text-[#064E3B] hover:bg-stone-50'
+                      ? 'text-[#0F3D2E] bg-[#2E7D32]/10 hover:bg-[#2E7D32]/20 font-semibold border border-[#2E7D32]/30'
+                      : 'text-[#0F3D2E]/80 hover:text-[#0F3D2E] hover:bg-[#EFE9D8]'
                   }`}
                 >
-                  {isRegister && <Store className="w-3.5 h-3.5 text-[#064E3B]" />}
+                  {isRegister && <Store className={`w-3.5 h-3.5 ${isActive ? 'text-[#D4AF37]' : 'text-[#2E7D32]'}`} />}
                   <span>{item.label}</span>
                   {isRegister && (
-                    <span className="text-[9px] bg-[#D4AF37] text-white px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
-                      Baru
+                    <span className="text-[9px] bg-[#2E7D32] text-white px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                      Gratis
                     </span>
                   )}
                 </button>
@@ -179,11 +179,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {/* Mobile Search Toggle */}
             <button
               onClick={() => setShowSearchModal(true)}
-              className="md:hidden p-2.5 rounded-xl text-stone-600 hover:text-[#064E3B] hover:bg-stone-100"
+              className="md:hidden p-2.5 rounded-xl text-[#0F3D2E] hover:bg-[#EFE9D8]"
               aria-label="Cari Produk"
             >
               <Search className="w-5 h-5" />
@@ -194,14 +194,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 id="btn-cart-nav"
                 onClick={onOpenCart}
-                className="relative p-2.5 rounded-xl text-stone-700 hover:text-[#064E3B] hover:bg-emerald-50/80 border border-stone-200/80 transition-all cursor-pointer flex items-center gap-1.5"
+                className="relative p-2.5 rounded-xl bg-white text-[#0F3D2E] hover:border-[#2E7D32] border border-[#DED6C1] transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
                 title="Keranjang Belanja Jamaah"
                 aria-label="Buka Keranjang Belanja"
               >
-                <ShoppingBag className="w-5 h-5 text-[#064E3B]" />
-                <span className="hidden sm:inline text-xs font-bold text-stone-700">Keranjang</span>
+                <ShoppingBag className="w-5 h-5 text-[#2E7D32]" />
+                <span className="hidden sm:inline text-xs font-bold text-[#0F3D2E]">Keranjang</span>
                 {cartCount > 0 && (
-                  <span className="inline-flex items-center justify-center text-[10px] font-extrabold bg-[#D4AF37] text-[#064E3B] px-1.5 py-0.2 rounded-full ring-2 ring-white">
+                  <span className="inline-flex items-center justify-center text-[10px] font-extrabold bg-[#D4AF37] text-[#0F3D2E] px-1.5 py-0.2 rounded-full ring-2 ring-white tabular-nums">
                     {cartCount > 99 ? '99+' : cartCount}
                   </span>
                 )}
@@ -216,10 +216,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 else if (isSellerLoggedIn) onNavigate('seller-dashboard');
                 else onNavigate('login');
               }}
-              className={`hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 activePage === 'login' || activePage === 'admin' || activePage === 'seller-dashboard'
-                  ? 'bg-[#D4AF37] text-[#064E3B] shadow-sm ring-2 ring-[#064E3B]'
-                  : 'bg-[#064E3B] text-white hover:bg-[#047857] shadow-xs'
+                  ? 'bg-[#D4AF37] text-[#0F3D2E] shadow-xs ring-2 ring-[#0F3D2E]'
+                  : 'bg-[#0F3D2E] text-[#F8F4E9] hover:bg-[#2E7D32] shadow-xs'
               }`}
             >
               {isAdminLoggedIn ? (
@@ -250,7 +250,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2.5 rounded-xl text-stone-700 hover:bg-stone-100 transition-colors"
+              className="lg:hidden p-2.5 rounded-xl text-[#0F3D2E] hover:bg-[#EFE9D8] transition-colors"
               aria-label="Menu Navigasi"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -261,7 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-stone-200 bg-white px-4 pt-3 pb-6 space-y-2 shadow-lg animate-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden border-t border-[#E5DEC9] bg-[#F8F4E9] px-4 pt-3 pb-6 space-y-2 shadow-lg animate-in slide-in-from-top-2 duration-200">
           <form onSubmit={handleSearchSubmit} className="mb-4">
             <div className="relative">
               <input
@@ -269,9 +269,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 placeholder="Cari produk atau UMKM..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-stone-100 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#064E3B]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-white border border-[#DED6C1] text-[#0F3D2E] focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
               />
-              <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
+              <Search className="w-4 h-4 text-[#2E7D32] absolute left-3.5 top-3.5" />
             </div>
           </form>
 
@@ -288,18 +288,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-colors text-left ${
                     isActive
-                      ? 'bg-emerald-50 text-[#064E3B] font-bold'
+                      ? 'bg-[#0F3D2E] text-white font-bold'
                       : isRegister
-                      ? 'bg-emerald-50/70 text-[#064E3B] font-semibold border border-emerald-200/60'
-                      : 'text-stone-700 hover:bg-stone-50'
+                      ? 'bg-[#2E7D32]/10 text-[#0F3D2E] font-semibold border border-[#2E7D32]/30'
+                      : 'text-[#0F3D2E] hover:bg-[#EFE9D8]'
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    {isRegister && <Store className="w-4 h-4 text-[#064E3B]" />}
+                    {isRegister && <Store className={`w-4 h-4 ${isActive ? 'text-[#D4AF37]' : 'text-[#2E7D32]'}`} />}
                     <span>{item.label}</span>
                   </div>
                   {isRegister && !isActive && (
-                    <span className="text-[10px] bg-[#D4AF37] text-white px-2 py-0.5 rounded-full font-bold">
+                    <span className="text-[10px] bg-[#2E7D32] text-white px-2 py-0.5 rounded-full font-bold">
                       Gratis
                     </span>
                   )}
@@ -308,7 +308,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               );
             })}
 
-            <div className="pt-2 border-t border-stone-100 space-y-2">
+            <div className="pt-2 border-t border-[#E5DEC9] space-y-2">
               {onOpenCart && (
                 <button
                   type="button"
@@ -316,14 +316,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onOpenCart();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold bg-emerald-50 text-[#064E3B] border border-emerald-200"
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold bg-white text-[#0F3D2E] border border-[#DED6C1]"
                 >
                   <div className="flex items-center gap-2">
-                    <ShoppingBag className="w-4 h-4 text-[#064E3B]" />
+                    <ShoppingBag className="w-4 h-4 text-[#2E7D32]" />
                     <span>Keranjang Belanja Jamaah</span>
                   </div>
                   {cartCount > 0 && (
-                    <span className="text-xs bg-[#D4AF37] text-[#064E3B] font-extrabold px-2.5 py-0.5 rounded-full">
+                    <span className="text-xs bg-[#D4AF37] text-[#0F3D2E] font-extrabold px-2.5 py-0.5 rounded-full">
                       {cartCount} item
                     </span>
                   )}
@@ -337,7 +337,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   else onNavigate('login');
                   setMobileMenuOpen(false);
                 }}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold bg-[#064E3B] text-white"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold bg-[#0F3D2E] text-white"
               >
                 <div className="flex items-center gap-2">
                   {isAdminLoggedIn && isSuperAdmin ? (
@@ -368,7 +368,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onLogout();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-red-600 bg-red-50 rounded-xl"
+                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-red-700 bg-red-50 rounded-xl"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>Keluar dari Akun</span>
@@ -381,15 +381,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Search Modal */}
       {showSearchModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-start justify-center p-4 pt-20">
-          <div className="bg-white w-full max-w-lg rounded-2xl p-5 shadow-2xl animate-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-[#0F3D2E]/60 backdrop-blur-xs flex items-start justify-center p-4 pt-20">
+          <div className="bg-[#F8F4E9] w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-[#DED6C1] animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-serif-title font-bold text-lg text-stone-900">
+              <h3 className="font-serif-title font-bold text-lg text-[#0F3D2E]">
                 Pencarian Produk & UMKM
               </h3>
               <button
                 onClick={() => setShowSearchModal(false)}
-                className="p-1.5 rounded-lg text-stone-400 hover:text-stone-600"
+                className="p-1.5 rounded-lg text-[#0F3D2E]/60 hover:text-[#0F3D2E]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -402,21 +402,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                   placeholder="Ketik nama produk, kue, fashion, atau UMKM..."
                   value={searchQuery}
                   onChange={(e) => onSearchChange(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#064E3B] text-base"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-[#DED6C1] focus:outline-none focus:ring-2 focus:ring-[#2E7D32] text-base text-[#0F3D2E]"
                 />
-                <Search className="w-5 h-5 text-stone-400 absolute left-3 top-3.5" />
+                <Search className="w-5 h-5 text-[#2E7D32] absolute left-3 top-3.5" />
               </div>
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowSearchModal(false)}
-                  className="px-4 py-2 rounded-xl text-sm text-stone-600 hover:bg-stone-100"
+                  className="px-4 py-2 rounded-xl text-sm text-[#0F3D2E]/70 hover:bg-[#EFE9D8]"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl text-sm font-semibold bg-[#064E3B] text-white hover:bg-[#047857]"
+                  className="px-5 py-2 rounded-xl text-sm font-semibold bg-[#0F3D2E] text-white hover:bg-[#2E7D32]"
                 >
                   Cari Sekarang
                 </button>

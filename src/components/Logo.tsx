@@ -5,7 +5,7 @@ interface LogoProps {
   variant?: 'full' | 'horizontal' | 'icon';
   className?: string;
   showTagline?: boolean;
-  lightMode?: boolean; // When placed on dark green backgrounds
+  lightMode?: boolean; // When placed on dark Forest Green backgrounds
 }
 
 export const Logo: React.FC<LogoProps> = ({
@@ -17,166 +17,192 @@ export const Logo: React.FC<LogoProps> = ({
 }) => {
   // Dimension scalers for Emblem
   const iconDimensions = {
-    xs: 'w-6 h-6',
-    sm: 'w-8 h-8',
-    md: 'w-11 h-11',
-    lg: 'w-16 h-16',
-    xl: 'w-24 h-24 sm:w-28 sm:h-28',
+    xs: 'w-7 h-7',
+    sm: 'w-9 h-9',
+    md: 'w-12 h-12',
+    lg: 'w-20 h-20',
+    xl: 'w-28 h-28 sm:w-32 sm:h-32',
   }[size];
 
-  // Title typography scale (Cinzel)
-  const titleSizes = {
-    xs: 'text-sm font-bold tracking-wider',
-    sm: 'text-base font-bold tracking-wider',
-    md: 'text-xl font-bold tracking-wider',
-    lg: 'text-3xl font-bold tracking-wider',
-    xl: 'text-4xl sm:text-5xl font-bold tracking-widest',
+  // Wordmark "darda.store" typography scale
+  const wordmarkSizes = {
+    xs: 'text-base',
+    sm: 'text-lg',
+    md: 'text-2xl',
+    lg: 'text-4xl',
+    xl: 'text-5xl sm:text-6xl',
   }[size];
 
-  // "STORE" subtitle scale
-  const subtitleSizes = {
-    xs: 'text-[7px] tracking-[0.2em] font-semibold',
-    sm: 'text-[9px] tracking-[0.22em] font-semibold',
-    md: 'text-[11px] tracking-[0.25em] font-semibold',
-    lg: 'text-xs sm:text-sm tracking-[0.3em] font-semibold',
-    xl: 'text-sm sm:text-base tracking-[0.35em] font-semibold',
-  }[size];
-
-  // Tagline scale
+  // Tagline "DARI MASJID UNTUK UMKM" scale
   const taglineSizes = {
-    xs: 'text-[8px]',
-    sm: 'text-[10px]',
-    md: 'text-xs',
-    lg: 'text-sm',
-    xl: 'text-sm sm:text-base',
+    xs: 'text-[7px] tracking-[0.2em]',
+    sm: 'text-[8.5px] tracking-[0.22em]',
+    md: 'text-[10px] tracking-[0.25em]',
+    lg: 'text-xs tracking-[0.3em]',
+    xl: 'text-xs sm:text-sm tracking-[0.34em]',
   }[size];
 
-  // Colors based on lightMode
-  const titleColor = lightMode ? 'text-white' : 'text-[#0C3B29]';
-  const taglineColor = lightMode ? 'text-emerald-100/90' : 'text-[#0C3B29]/90';
-  const goldStrokeColor = lightMode ? '#FDE047' : '#D4AF37';
+  // Official Brand Colors from Showcase:
+  // Forest Green: #0F3D2E
+  // Fresh Green: #2E7D32
+  // Warm Gold: #D4AF37
+  // Cream: #F8F4E9
+  const dardaColor = lightMode ? 'text-[#F8F4E9]' : 'text-[#0F3D2E]';
+  const storeColor = lightMode ? 'text-[#5FD068]' : 'text-[#2E7D32]';
+  const taglineColor = lightMode ? 'text-[#F8F4E9]/85' : 'text-[#0F3D2E]/85';
 
-  // The custom emblem faithfully matching the official Darda Store identity
+  // Unique SVG gradient ID suffix so multiple logos on page don't collide
+  const uid = React.useId().replace(/:/g, '');
+
+  // The official darda.store emblem: Lowercase 'd' shopping bag + Cream Mihrab Arch + Warm Gold Mosque Dome & Crescent
   const Emblem = (
     <div className={`relative flex items-center justify-center shrink-0 ${iconDimensions}`}>
       <svg
-        viewBox="0 0 500 500"
+        viewBox="0 0 500 540"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full drop-shadow-xs select-none"
+        className="w-full h-full select-none drop-shadow-xs"
       >
         <defs>
-          <linearGradient id="emblemEmerald" x1="150" y1="80" x2="350" y2="280" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#145A38" />
-            <stop offset="45%" stopColor="#0C3B29" />
-            <stop offset="100%" stopColor="#05261A" />
+          {/* Forest Green 3D Gradient (#0F3D2E) */}
+          <linearGradient id={`forestGreen-${uid}`} x1="120" y1="60" x2="390" y2="490" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#1A5C46" />
+            <stop offset="45%" stopColor="#0F3D2E" />
+            <stop offset="100%" stopColor="#08241B" />
           </linearGradient>
 
-          <linearGradient id="emblemGold" x1="140" y1="160" x2="260" y2="280" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#ECC66D" />
+          {/* Forest Green Handle Bevel */}
+          <linearGradient id={`forestBevel-${uid}`} x1="150" y1="50" x2="350" y2="200" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#246B53" />
+            <stop offset="55%" stopColor="#0F3D2E" />
+            <stop offset="100%" stopColor="#08241B" />
+          </linearGradient>
+
+          {/* Warm Gold 3D Mosque Dome Gradient (#D4AF37) */}
+          <linearGradient id={`warmGold-${uid}`} x1="200" y1="240" x2="310" y2="410" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#F7E08A" />
             <stop offset="40%" stopColor="#D4AF37" />
-            <stop offset="75%" stopColor="#B8860B" />
-            <stop offset="100%" stopColor="#8F6B08" />
+            <stop offset="80%" stopColor="#B88E22" />
+            <stop offset="100%" stopColor="#9A7414" />
           </linearGradient>
 
-          <filter id="emblemDropShadow" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#05261A" floodOpacity="0.18" />
+          {/* Cream Mihrab Arch (#F8F4E9) */}
+          <linearGradient id={`creamArch-${uid}`} x1="250" y1="185" x2="250" y2="470" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#F8F4E9" />
+            <stop offset="100%" stopColor="#EDE4CE" />
+          </linearGradient>
+
+          <filter id={`emblemShadow-${uid}`} x="-12%" y="-12%" width="124%" height="124%">
+            <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#072219" floodOpacity="0.2" />
           </filter>
         </defs>
 
-        <g filter="url(#emblemDropShadow)">
-          {/* Main "D" Body in Deep Islamic Emerald */}
+        <g filter={`url(#emblemShadow-${uid})`}>
+          {/* 1. Shopping Bag Handle at Top (Forest Green #0F3D2E) */}
           <path
-            d="M 152 86
-               L 152 280
-               C 152 280, 210 286, 252 280
-               C 320 270, 348 220, 348 180
-               C 348 120, 290 86, 230 86
+            d="M 192 142
+               C 192 78, 308 78, 308 142
+               L 308 156
+               C 295 150, 282 146, 272 144
+               L 272 138
+               C 272 104, 228 104, 228 138
+               L 228 144
+               C 218 146, 205 150, 192 156
                Z"
-            fill="url(#emblemEmerald)"
-          />
-          <path
-            d="M 152 86
-               C 152 86, 230 84, 280 102
-               C 336 122, 350 178, 344 228
-               C 336 284, 290 326, 234 326
-               C 200 326, 175 308, 175 308
-               L 190 286
-               C 190 286, 212 300, 236 300
-               C 272 300, 312 268, 318 222
-               C 324 180, 310 134, 266 118
-               C 226 104, 178 106, 178 106
-               Z"
-            fill="url(#emblemEmerald)"
+            fill={`url(#forestBevel-${uid})`}
           />
 
-          {/* Inner White Islamic Arch (Mihrab) */}
+          {/* 2. Main Lowercase 'd' Bowl & Right Vertical Stem (Forest Green #0F3D2E) */}
           <path
-            d="M 246 112
-               C 246 112, 222 144, 204 172
-               C 192 192, 192 274, 192 274
-               L 298 274
-               C 298 274, 298 192, 286 172
-               C 268 144, 246 112, 246 112
+            d="M 332 128
+               C 332 104, 350 92, 372 92
+               L 382 92
+               C 390 92, 396 98, 396 106
+               L 396 364
+               C 396 426, 368 468, 332 480
+               L 332 294
+               C 332 248, 294 218, 250 182
+               C 206 218, 168 248, 168 294
+               L 168 476
+               C 118 450, 92 396, 92 332
+               C 92 232, 164 164, 252 164
+               C 284 164, 312 173, 332 188
+               Z"
+            fill={`url(#forestGreen-${uid})`}
+          />
+
+          {/* 3. Cream Mihrab Outer Arch Frame (#F8F4E9) */}
+          <path
+            d="M 250 182
+               C 294 218, 332 248, 332 294
+               L 332 480
+               L 168 476
+               L 168 294
+               C 168 248, 206 218, 250 182
+               Z"
+            fill={`url(#creamArch-${uid})`}
+          />
+
+          {/* 4. Crisp White Inner Mihrab Arch */}
+          <path
+            d="M 250 212
+               C 284 242, 312 266, 312 304
+               L 312 440
+               L 188 440
+               L 188 304
+               C 188 266, 216 242, 250 212
                Z"
             fill="#FFFFFF"
           />
 
-          {/* Mosque Dome Silhouette (Inside Arch, Emerald) */}
+          {/* 5. Warm Gold Mosque Dome + Crescent Finial (#D4AF37) */}
+          {/* Crescent Moon (Hilal) */}
           <path
-            d="M 246 160
-               C 246 160, 234 184, 216 196
-               C 210 200, 210 274, 210 274
-               L 280 274
-               C 280 274, 280 200, 274 196
-               C 256 184, 246 160, 246 160
+            d="M 252 242
+               C 242 242, 234 250, 234 260
+               C 234 270, 242 278, 252 278
+               C 258 278, 263 275, 266 271
+               C 262 273, 258 273, 254 271
+               C 246 268, 243 259, 246 251
+               C 248 246, 253 243, 258 243
+               C 256 242, 254 242, 252 242
                Z"
-            fill="#0C3B29"
+            fill={`url(#warmGold-${uid})`}
+          />
+          {/* Spire Rod */}
+          <rect x="248" y="275" width="4" height="16" rx="2" fill={`url(#warmGold-${uid})`} />
+
+          {/* Mosque Dome (Kubah) */}
+          <path
+            d="M 250 286
+               C 256 306, 272 322, 290 338
+               C 304 350, 310 368, 310 392
+               L 190 392
+               C 190 368, 196 350, 210 338
+               C 228 322, 244 306, 250 286
+               Z"
+            fill={`url(#warmGold-${uid})`}
           />
 
-          {/* Golden Crescent Moon (Hilal) */}
+          {/* White Arch Separator Curve Above Base */}
           <path
-            d="M 246 130
-               C 252 130, 258 136, 258 143
-               C 258 150, 252 156, 245 156
-               C 238 156, 234 150, 234 144
-               C 234 140, 236 137, 238 135
-               C 236 139, 237 146, 242 149
-               C 247 151, 252 148, 252 143
-               C 252 137, 248 132, 246 130
-               Z"
-            fill="url(#emblemGold)"
+            d="M 188 392 Q 250 382 312 392 L 312 402 L 188 402 Z"
+            fill="#FFFFFF"
           />
 
-          {/* Golden Leaf Accent at Bottom-Left */}
+          {/* 6. Forest Green Rounded Base Bar Inside Arch (#0F3D2E) */}
           <path
-            d="M 152 172
-               C 152 172, 142 220, 160 260
-               C 176 294, 214 314, 246 312
-               C 246 312, 212 300, 194 274
-               C 172 240, 176 198, 152 172
+            d="M 212 396
+               L 288 396
+               C 308 396, 324 412, 324 432
+               L 324 474
+               C 324 480, 319 484, 313 484
+               L 187 484
+               C 181 484, 176 480, 176 474
+               L 176 432
+               C 176 412, 192 396, 212 396
                Z"
-            fill="url(#emblemGold)"
-          />
-          <path
-            d="M 152 172
-               C 152 172, 178 206, 194 246
-               C 208 280, 246 312, 246 312
-               C 246 312, 222 284, 210 254
-               C 192 214, 174 186, 152 172
-               Z"
-            fill="#F3D17A"
-            opacity="0.9"
-          />
-
-          {/* Delicate White Central Leaf Vein */}
-          <path
-            d="M 154 176
-               C 174 212, 200 256, 242 310"
-            stroke="#FFFFFF"
-            strokeWidth="3"
-            strokeLinecap="round"
-            opacity="0.95"
+            fill={`url(#forestGreen-${uid})`}
           />
         </g>
       </svg>
@@ -188,39 +214,22 @@ export const Logo: React.FC<LogoProps> = ({
     return Emblem;
   }
 
-  // Variant: Full Stacked Logo (Hero, Splash, Login, Footer)
+  // Variant: Full Stacked Logo (Hero, Splash, Login, About)
   if (variant === 'full') {
     return (
       <div className={`flex flex-col items-center text-center select-none ${className}`}>
         {Emblem}
-        <div className="mt-3.5 space-y-1">
-          {/* "DARDA" in Cinzel */}
-          <h1 className={`font-brand ${titleColor} ${titleSizes} tracking-widest drop-shadow-2xs`}>
-            DARDA
-          </h1>
-
-          {/* "— STORE —" with Golden Horizontal Rules */}
-          <div className="flex items-center justify-center gap-2.5 my-1">
-            <span 
-              className="h-[1.5px] w-8 rounded-full" 
-              style={{ backgroundColor: goldStrokeColor }}
-            />
-            <span 
-              className={`uppercase ${subtitleSizes} font-bold`}
-              style={{ color: goldStrokeColor }}
-            >
-              STORE
-            </span>
-            <span 
-              className="h-[1.5px] w-8 rounded-full" 
-              style={{ backgroundColor: goldStrokeColor }}
-            />
+        <div className="mt-2.5 flex flex-col items-center">
+          {/* "darda.store" lowercase geometric wordmark */}
+          <div className={`font-brand ${wordmarkSizes} leading-none tracking-tight flex items-baseline`}>
+            <span className={`font-extrabold ${dardaColor}`}>darda.</span>
+            <span className={`font-semibold ${storeColor}`}>store</span>
           </div>
 
-          {/* Official Tagline */}
+          {/* Official Tagline: "DARI MASJID UNTUK UMKM" */}
           {showTagline && (
-            <p className={`font-serif italic font-medium ${taglineColor} mt-1.5 ${taglineSizes}`}>
-              Belanja Berkah, Dukung UMKM Jamaah
+            <p className={`uppercase font-semibold ${taglineColor} mt-2 ${taglineSizes}`}>
+              DARI MASJID UNTUK UMKM
             </p>
           )}
         </div>
@@ -228,28 +237,21 @@ export const Logo: React.FC<LogoProps> = ({
     );
   }
 
-  // Variant: Horizontal lockup (Navbar, Headers, Compact Cards)
+  // Variant: Horizontal lockup (Navbar, Footer, Headers)
   return (
-    <div className={`flex items-center gap-3 select-none ${className}`}>
+    <div className={`flex items-center gap-2.5 select-none ${className}`}>
       {Emblem}
-      <div className="flex flex-col">
-        {/* "DARDA" */}
-        <div className="flex items-baseline gap-2">
-          <span className={`font-brand ${titleColor} ${titleSizes} tracking-wider`}>
-            DARDA
-          </span>
-          <span 
-            className={`uppercase ${subtitleSizes} font-bold`}
-            style={{ color: goldStrokeColor }}
-          >
-            STORE
-          </span>
+      <div className="flex flex-col justify-center">
+        {/* "darda.store" */}
+        <div className={`font-brand ${wordmarkSizes} leading-none tracking-tight flex items-baseline`}>
+          <span className={`font-extrabold ${dardaColor}`}>darda.</span>
+          <span className={`font-semibold ${storeColor}`}>store</span>
         </div>
 
-        {/* Tagline */}
+        {/* Tagline: "DARI MASJID UNTUK UMKM" */}
         {showTagline && (
-          <span className={`font-serif italic font-medium ${taglineColor} line-clamp-1 ${taglineSizes}`}>
-            Belanja Berkah, Dukung UMKM Jamaah
+          <span className={`uppercase font-semibold ${taglineColor} mt-1 line-clamp-1 ${taglineSizes}`}>
+            DARI MASJID UNTUK UMKM
           </span>
         )}
       </div>

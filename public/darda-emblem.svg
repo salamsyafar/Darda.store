@@ -1,124 +1,145 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 540" fill="none">
   <defs>
-    <!-- Emerald Green Gradient for Letter D -->
-    <linearGradient id="emeraldD" x1="150" y1="80" x2="350" y2="280" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#145A38" />
-      <stop offset="45%" stop-color="#0C3B29" />
-      <stop offset="100%" stop-color="#05261A" />
+    <!-- Forest Green 3D Gradient (#0F3D2E) -->
+    <linearGradient id="forestGreen" x1="120" y1="60" x2="390" y2="490" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#17523F" />
+      <stop offset="45%" stop-color="#0F3D2E" />
+      <stop offset="100%" stop-color="#08261C" />
     </linearGradient>
 
-    <!-- Gold Metallic Gradient for Leaf & Crescent -->
-    <linearGradient id="goldLeaf" x1="140" y1="160" x2="260" y2="280" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#ECC66D" />
-      <stop offset="40%" stop-color="#D4AF37" />
-      <stop offset="75%" stop-color="#B8860B" />
-      <stop offset="100%" stop-color="#8F6B08" />
+    <!-- Forest Green Highlight for 3D Bevel -->
+    <linearGradient id="forestBevel" x1="150" y1="50" x2="350" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#256F56" />
+      <stop offset="50%" stop-color="#0F3D2E" />
+      <stop offset="100%" stop-color="#072219" />
     </linearGradient>
 
-    <!-- Subtle Drop Shadow for depth -->
-    <filter id="softGlow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#05261A" flood-opacity="0.15" />
+    <!-- Warm Gold 3D Dome Gradient (#D4AF37) -->
+    <linearGradient id="warmGold" x1="200" y1="240" x2="310" y2="410" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F6DF86" />
+      <stop offset="38%" stop-color="#DFB944" />
+      <stop offset="75%" stop-color="#C89E28" />
+      <stop offset="100%" stop-color="#9F7916" />
+    </linearGradient>
+
+    <!-- Cream Mihrab Arch Gradient (#F8F4E9) -->
+    <linearGradient id="creamArch" x1="250" y1="200" x2="250" y2="460" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F8F4E9" />
+      <stop offset="100%" stop-color="#EDE5D0" />
+    </linearGradient>
+
+    <!-- Soft 3D Drop Shadow -->
+    <filter id="logoShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#08261C" flood-opacity="0.22" />
     </filter>
   </defs>
 
-  <g filter="url(#softGlow)">
-    <!-- 1. The Letter "D" Body (Deep Forest Emerald) -->
+  <g filter="url(#logoShadow)">
+    <!-- 1. Shopping Bag Handle at Top (Forest Green #0F3D2E) -->
     <path
-      d="M 152 86
-         C 152 86, 230 84, 280 102
-         C 336 122, 350 178, 344 228
-         C 336 284, 290 326, 234 326
-         C 200 326, 175 308, 175 308
-         L 190 286
-         C 190 286, 212 300, 236 300
-         C 272 300, 312 268, 318 222
-         C 324 180, 310 134, 266 118
-         C 226 104, 178 106, 178 106
+      d="M 192 142
+         C 192 78, 308 78, 308 142
+         L 308 156
+         C 295 150, 282 146, 272 144
+         L 272 138
+         C 272 104, 228 104, 228 138
+         L 228 144
+         C 218 146, 205 150, 192 156
          Z"
-      fill="url(#emeraldD)"
+      fill="url(#forestBevel)"
     />
 
-    <!-- Solid fill inside D to frame the arch cleanly -->
+    <!-- 2. Main Lowercase 'd' Bowl & Right Vertical Stem (Forest Green #0F3D2E) -->
     <path
-      d="M 152 86
-         L 152 280
-         C 152 280, 210 286, 252 280
-         C 320 270, 348 220, 348 180
-         C 348 120, 290 86, 230 86
+      d="M 332 128
+         C 332 104, 350 92, 372 92
+         L 382 92
+         C 390 92, 396 98, 396 106
+         L 396 364
+         C 396 426, 368 468, 332 480
+         L 332 294
+         C 332 248, 294 218, 250 182
+         C 206 218, 168 248, 168 294
+         L 168 476
+         C 118 450, 92 396, 92 332
+         C 92 232, 164 164, 252 164
+         C 284 164, 312 173, 332 188
          Z"
-      fill="url(#emeraldD)"
+      fill="url(#forestGreen)"
     />
 
-    <!-- 2. The Inner White Islamic Arch (Mihrab Cutout) -->
+    <!-- 3. Cream Mihrab Outer Arch Frame (#F8F4E9) -->
     <path
-      d="M 246 112
-         C 246 112, 222 144, 204 172
-         C 192 192, 192 274, 192 274
-         L 298 274
-         C 298 274, 298 192, 286 172
-         C 268 144, 246 112, 246 112
+      d="M 250 182
+         C 294 218, 332 248, 332 294
+         L 332 480
+         L 168 476
+         L 168 294
+         C 168 248, 206 218, 250 182
+         Z"
+      fill="url(#creamArch)"
+    />
+
+    <!-- 4. Crisp White Inner Mihrab Arch -->
+    <path
+      d="M 250 212
+         C 284 242, 312 266, 312 304
+         L 312 440
+         L 188 440
+         L 188 304
+         C 188 266, 216 242, 250 212
          Z"
       fill="#FFFFFF"
     />
 
-    <!-- 3. The Mosque Dome Silhouette (Inside Arch, Emerald) -->
-    <!-- Dome Base & Arch -->
+    <!-- 5. Warm Gold Mosque Dome + Crescent Finial (#D4AF37) -->
+    <!-- Crescent Moon (Hilal) -->
     <path
-      d="M 246 160
-         C 246 160, 234 184, 216 196
-         C 210 200, 210 274, 210 274
-         L 280 274
-         C 280 274, 280 200, 274 196
-         C 256 184, 246 160, 246 160
+      d="M 252 242
+         C 242 242, 234 250, 234 260
+         C 234 270, 242 278, 252 278
+         C 258 278, 263 275, 266 271
+         C 262 273, 258 273, 254 271
+         C 246 268, 243 259, 246 251
+         C 248 246, 253 243, 258 243
+         C 256 242, 254 242, 252 242
          Z"
-      fill="#0C3B29"
+      fill="url(#warmGold)"
+    />
+    <!-- Spire Rod -->
+    <rect x="248" y="275" width="4" height="16" rx="2" fill="url(#warmGold)" />
+
+    <!-- Mosque Dome (Kubah) -->
+    <path
+      d="M 250 286
+         C 256 306, 272 322, 290 338
+         C 304 350, 310 368, 310 392
+         L 190 392
+         C 190 368, 196 350, 210 338
+         C 228 322, 244 306, 250 286
+         Z"
+      fill="url(#warmGold)"
     />
 
-    <!-- 4. The Golden Crescent Moon (Hilal) -->
+    <!-- White Arch Separator Line Above Base -->
     <path
-      d="M 246 130
-         C 252 130, 258 136, 258 143
-         C 258 150, 252 156, 245 156
-         C 238 156, 234 150, 234 144
-         C 234 140, 236 137, 238 135
-         C 236 139, 237 146, 242 149
-         C 247 151, 252 148, 252 143
-         C 252 137, 248 132, 246 130
-         Z"
-      fill="url(#goldLeaf)"
+      d="M 188 392 Q 250 382 312 392 L 312 402 L 188 402 Z"
+      fill="#FFFFFF"
     />
 
-    <!-- 5. The Golden Leaf (Swooping up at bottom-left) -->
+    <!-- 6. Forest Green Rounded Base Bar Inside Arch (#0F3D2E) -->
     <path
-      d="M 152 172
-         C 152 172, 142 220, 160 260
-         C 176 294, 214 314, 246 312
-         C 246 312, 212 300, 194 274
-         C 172 240, 176 198, 152 172
+      d="M 212 396
+         L 288 396
+         C 308 396, 324 412, 324 432
+         L 324 474
+         C 324 480, 319 484, 313 484
+         L 187 484
+         C 181 484, 176 480, 176 474
+         L 176 432
+         C 176 412, 192 396, 212 396
          Z"
-      fill="url(#goldLeaf)"
-    />
-
-    <!-- Inner portion of leaf for 3D curved leaf curvature -->
-    <path
-      d="M 152 172
-         C 152 172, 178 206, 194 246
-         C 208 280, 246 312, 246 312
-         C 246 312, 222 284, 210 254
-         C 192 214, 174 186, 152 172
-         Z"
-      fill="#F3D17A"
-      opacity="0.9"
-    />
-
-    <!-- Delicate White Central Leaf Vein -->
-    <path
-      d="M 154 176
-         C 174 212, 200 256, 242 310"
-      stroke="#FFFFFF"
-      stroke-width="3"
-      stroke-linecap="round"
-      opacity="0.95"
+      fill="url(#forestGreen)"
     />
   </g>
 </svg>
